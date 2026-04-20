@@ -1,0 +1,45 @@
+---
+title: "MVP limits"
+description: "Current limits and defaults for the LightSwap Partner API MVP."
+---
+
+The Partner API MVP is intentionally small. It covers backend quote-driven swap creation and status polling.
+
+## Current limits
+
+| Area | Current behavior |
+| --- | --- |
+| API keys | Backend-only partner API keys. |
+| Quote type | Exact-input floating quotes only. |
+| Quote lifetime | Short-lived quotes with an `expiresAt` timestamp. |
+| Commission | Configured during partner onboarding. |
+| Status updates | Poll `GET /swap/{id}`. |
+| Destination memo | Not supported in the MVP. |
+| Webhooks | Not included in the MVP. |
+| Browser or widget key | Not included in the MVP. |
+| Refund endpoint | Not included in the MVP. |
+| Public dashboard | Not included in the MVP. |
+| Per-request custom fee | Not included in the MVP. |
+
+## Integration defaults
+
+- Poll active swaps every 30 seconds.
+- Store the LightSwap swap ID with your own order ID.
+- Use a unique `Idempotency-Key` for every create-swap attempt.
+- Treat all amounts as decimal strings.
+- Refresh supported assets regularly instead of hardcoding asset lists.
+
+## Fees and network costs
+
+The API returns the route estimate and deposit instructions for the swap. Wallet, gas, and blockchain network costs are separate third-party costs and can change outside LightSwap.
+
+## Support handoff
+
+When you contact support, include:
+
+- LightSwap swap ID.
+- Your `externalId`, if you sent one.
+- `x-request-id` from the API response.
+- Deposit transaction hash, if the user has already sent funds.
+
+Do not include private keys, seed phrases, or full internal customer records.

@@ -1,33 +1,59 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "API reference"
+description: "Endpoint reference for the LightSwap Partner API."
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+The API reference is generated from the LightSwap Partner API OpenAPI specification.
 
-## Welcome
+## Base URL
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+```text
+https://lightswap.me/api/partner/v1
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Every request requires the `x-api-key` header:
+
+```http
+x-api-key: <partner_api_key>
+```
+
+Every response includes an `x-request-id` header. Include that value when you contact support about a request.
+
+## Endpoint groups
+
+<CardGroup cols={2}>
+  <Card title="Assets" icon="coins" href="/api-reference/asset">
+    List active assets and filter by network or symbol.
+  </Card>
+
+  <Card title="Address validation" icon="shield-check" href="/api-reference/address">
+    Validate a payout address before creating a swap.
+  </Card>
+
+  <Card title="Quotes" icon="badge-dollar-sign" href="/api-reference/quote">
+    Create a short-lived exact-input quote.
+  </Card>
+
+  <Card title="Swaps" icon="repeat" href="/api-reference/create-swap">
+    Create a swap and poll its status.
+  </Card>
+</CardGroup>
+
+## Response format
+
+Successful responses return the endpoint payload directly. Error responses use a shared structure:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+{
+  "error": {
+    "code": "quote_expired",
+    "message": "Partner quote has expired.",
+    "details": {}
+  },
+  "requestId": "request-id"
+}
 ```
+
+Use the endpoint pages in this section for request fields, response fields, headers, and examples.

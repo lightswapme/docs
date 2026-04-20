@@ -1,97 +1,87 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Partner API"
+description: "Add LightSwap swaps to your website, wallet, app, or project from your backend."
 ---
 
-## Setting up
+The LightSwap Partner API lets approved partners create crypto swaps from their own backend. Your application keeps the user experience, and LightSwap returns quotes, deposit instructions, and status updates through a small REST API.
 
-Get your documentation site up and running in minutes.
+<Note>
+  Partner API keys are server-side credentials. Do not expose them in browser code, mobile apps, widgets, public repositories, or client-side logs.
+</Note>
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+## Base URL
 
-## Make it yours
+```text
+https://lightswap.me/api/partner/v1
+```
 
-Design a docs site that looks great and empowers your users.
+## What you can build
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Quote-driven swaps" icon="repeat" href="/quickstart">
+    Request a live quote, create a swap from that quote, and show deposit instructions to your user.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
 
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
+  <Card title="Status tracking" icon="circle-check" href="/partner-api/statuses-errors">
+    Poll a swap by ID and display one clear status for the full route.
   </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
 
-## Need inspiration?
+  <Card title="Asset discovery" icon="coins" href="/api-reference/asset">
+    List active assets and filter by network or symbol before you build your pair selector.
+  </Card>
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+  <Card title="Backend integration" icon="server" href="/partner-api/authentication">
+    Authenticate with `x-api-key`, pass request IDs, and keep partner credentials private.
+  </Card>
+</CardGroup>
+
+## Integration model
+
+The MVP flow is exact-input and floating-rate:
+
+<Steps>
+  <Step title="List supported assets">
+    Use `GET /asset` to load supported assets, networks, decimals, logos, and memo requirements.
+  </Step>
+
+  <Step title="Validate the payout address">
+    Use `POST /address` before creating a swap so your user can fix address mistakes early.
+  </Step>
+
+  <Step title="Create a quote">
+    Use `POST /quote` with the send asset, receive asset, and send amount. Quotes are short-lived.
+  </Step>
+
+  <Step title="Create the swap">
+    Use `POST /swap` with the quote ID, destination address, and an `Idempotency-Key` header.
+  </Step>
+
+  <Step title="Poll status">
+    Use `GET /swap/{id}` until the swap reaches a terminal status.
+  </Step>
+</Steps>
+
+## Public API scope
+
+The Partner API MVP includes:
+
+- Active asset discovery.
+- Destination address validation.
+- Exact-input quote creation.
+- Swap creation from a quote.
+- Swap status lookup.
+- Partner attribution through `externalId` and constrained `metadata`.
+
+It does not include webhooks, browser keys, public dashboards, refund endpoints, or per-request custom fees.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Make the first quote and swap requests.
+  </Card>
+
+  <Card title="API reference" icon="brackets-curly" href="/api-reference/introduction">
+    Review every endpoint, request body, response, and error.
+  </Card>
+</CardGroup>

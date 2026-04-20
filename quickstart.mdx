@@ -1,80 +1,116 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Create a quote, create a swap, and poll its status with the LightSwap Partner API."
 ---
 
-## Get started in three steps
+This quickstart shows the minimum backend flow for creating a LightSwap swap.
 
-Get your documentation site running locally and make your first customization.
+## Prerequisites
 
-### Step 1: Set up your local environment
+- An active partner API key.
+- A backend service that can keep the key private.
+- A destination wallet address for the asset your user wants to receive.
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+Set your key as an environment variable on your backend:
 
-### Step 2: Deploy your changes
+```bash
+export LIGHTSWAP_PARTNER_KEY="lsk_live_..."
+```
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+## 1. List assets
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+Use the asset list to build your pair selector and to confirm network names.
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+```bash
+curl "https://lightswap.me/api/partner/v1/asset?symbol=USDT" \
+  -H "x-api-key: $LIGHTSWAP_PARTNER_KEY"
+```
 
-### Step 3: Go live
+The response includes `network`, `decimals`, `contractAddress`, `logoUrl`, `canSend`, `canReceive`, and `requiresMemo`.
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+## 2. Validate the destination address
 
-## Next steps
+Validate the payout address before creating the swap.
 
-Now that you have your docs running, explore these key features:
+```bash
+curl -X POST "https://lightswap.me/api/partner/v1/address" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $LIGHTSWAP_PARTNER_KEY" \
+  -d '{
+    "network": "Tron",
+    "token": "USDT",
+    "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
+    "memo": null
+  }'
+```
 
-<CardGroup cols={2}>
+For the MVP, destination memo is not supported. Send `null` or omit it.
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+## 3. Create a quote
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+Create a short-lived floating quote. Send `from.amount` and omit `to.amount`.
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+```bash
+curl -X POST "https://lightswap.me/api/partner/v1/quote" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $LIGHTSWAP_PARTNER_KEY" \
+  -d '{
+    "from": {
+      "network": "Bitcoin",
+      "token": "BTC",
+      "amount": "0.01"
+    },
+    "to": {
+      "network": "Tron",
+      "token": "USDT"
+    },
+    "externalId": "partner-order-123",
+    "metadata": {
+      "customerId": "u_123"
+    }
+  }'
+```
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+The response returns a `pq_` quote ID and an `expiresAt` timestamp. Create the swap before that time.
 
-</CardGroup>
+## 4. Create a swap
 
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+Use the quote ID and an idempotency key. Reusing the same idempotency key with the same body returns the same swap.
+
+```bash
+curl -X POST "https://lightswap.me/api/partner/v1/swap" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $LIGHTSWAP_PARTNER_KEY" \
+  -H "Idempotency-Key: partner-order-123-create" \
+  -d '{
+    "quoteId": "pq_aaaaaaaaaaaaaaaaaaaaaaaa",
+    "destination": {
+      "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
+      "memo": null
+    },
+    "notificationEmail": "optional@example.com"
+  }'
+```
+
+The response returns:
+
+- `id`: the LightSwap swap ID.
+- `status`: the current public status.
+- `deposit`: the address, amount, asset, network, memo, and deadline for the user deposit.
+- `payout`: the destination details.
+- `quote`: the partner quote ID and route timing estimate.
+
+## 5. Poll status
+
+Poll every 30 seconds while the status is not terminal.
+
+```bash
+curl "https://lightswap.me/api/partner/v1/swap/AB12CD34EF56" \
+  -H "x-api-key: $LIGHTSWAP_PARTNER_KEY"
+```
+
+Terminal statuses are `completed`, `refunded`, `failed`, and `expired`.
+
+<Tip>
+  Store the LightSwap swap ID with your own order ID. It is the value support needs when checking a specific swap.
+</Tip>

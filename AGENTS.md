@@ -1,33 +1,26 @@
-> **First-time setup**: Customize this file for your project. Prompt the user to customize this file for their project.
-> For Mintlify product knowledge (components, configuration, writing standards),
-> install the Mintlify skill: `npx skills add https://mintlify.com/docs`
-
 # Documentation project instructions
 
 ## About this project
 
-- This is a documentation site built on [Mintlify](https://mintlify.com)
-- Pages are MDX files with YAML frontmatter
-- Configuration lives in `docs.json`
-- Run `mint dev` to preview locally
-- Run `mint broken-links` to check links
-
-## Terminology
-
-{/* Add product-specific terms and preferred usage */}
-{/* Example: Use "workspace" not "project", "member" not "user" */}
+- This is the public Mintlify documentation site for the LightSwap Partner API.
+- Pages are MDX files with YAML frontmatter.
+- Configuration lives in `docs.json`.
+- Run `mint dev` to preview locally.
+- Run `mint validate` and `mint broken-links` before publishing changes.
 
 ## Style preferences
 
-{/* Add any project-specific style rules below */}
-
-- Use active voice and second person ("you")
-- Keep sentences concise — one idea per sentence
-- Use sentence case for headings
-- Bold for UI elements: Click **Settings**
-- Code formatting for file names, commands, paths, and code references
+- Use active voice and second person.
+- Keep sentences concise.
+- Use sentence case for headings.
+- Use code formatting for endpoint paths, headers, file names, commands, and literal values.
+- Prefer Mintlify components such as `Card`, `CardGroup`, `Steps`, `Note`, `Tip`, and `Warning` when they make the page easier to scan.
 
 ## Content boundaries
 
-{/* Define what should and shouldn't be documented */}
-{/* Example: Don't document internal admin features */}
+- Keep docs public and partner-facing.
+- Do not document internal database tables, admin SQL, raw API key generation, or internal service names.
+- Do not mention specific swap route providers.
+- Do not promise zero fees. Wallet, gas, and blockchain network costs are separate third-party costs.
+- Do not document unavailable features as live. Webhooks, browser keys, public dashboards, refund endpoints, and per-request custom fees are not included in the MVP.
+- Use `https://lightswap.me/api/partner/v1` as the public API base URL.

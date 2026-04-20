@@ -1,0 +1,75 @@
+---
+title: "Integration flow"
+description: "Understand the quote, swap, deposit, and status flow for partner integrations."
+---
+
+The Partner API separates quote creation from swap creation.
+
+`POST /quote` gives you a short-lived estimate. `POST /swap` creates the actual swap and returns deposit instructions.
+
+<Note>
+  Deposit details are created only after `POST /swap`. Do not ask users to send funds from a quote response.
+</Note>
+
+## Recommended flow
+
+<Steps>
+  <Step title="Load assets">
+    Call `GET /asset` when your app needs supported networks, token symbols, decimals, logos, and memo requirements.
+  </Step>
+
+  <Step title="Validate the payout address">
+    Call `POST /address` after the user enters a destination address.
+  </Step>
+
+  <Step title="Create a quote">
+    Call `POST /quote` with the send asset, receive asset, and exact send amount.
+  </Step>
+
+  <Step title="Create the swap">
+    Call `POST /swap` with the quote ID, destination address, and `Idempotency-Key`.
+  </Step>
+
+  <Step title="Show deposit instructions">
+    Display the `deposit.address`, `deposit.memo`, `deposit.amount`, `deposit.network`, `deposit.token`, and `deposit.deadline` from the swap response.
+  </Step>
+
+  <Step title="Track the swap">
+    Call `GET /swap/{id}` every 30 seconds until the status is terminal.
+  </Step>
+</Steps>
+
+## Quote lifetime
+
+Partner quotes are short-lived. The quote response includes `expiresAt`.
+
+If the quote expires before you create a swap, create a new quote. The API returns `quote_expired` when a quote is no longer valid.
+
+## Idempotency
+
+`POST /swap` requires an `Idempotency-Key` header.
+
+Use a unique key for each create-swap attempt, such as your order ID plus an action suffix.
+
+```http
+Idempotency-Key: partner-order-123-create
+```
+
+Behavior:
+
+- Same key and same body: returns the same swap.
+- Same key and different body: returns `409 idempotency_conflict`.
+
+## Amounts and rates
+
+Amount fields are strings. Treat them as decimal strings, not JavaScript numbers.
+
+Quote amounts are estimates. The final received amount can change with floating-rate swaps and network conditions before execution.
+
+Wallet, gas, and blockchain network costs are separate third-party costs.
+
+## Destination memo
+
+Destination memo is not supported in the MVP. Send `null` or omit the memo field.
+
+If a future asset requires memo support, the asset list will expose that through `requiresMemo`.
