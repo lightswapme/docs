@@ -12,6 +12,7 @@
     "tabs": [
       {
         "tab": "Getting Started",
+        "icon": "car-side",
         "pages": [
           "main-info",
           "support",
@@ -20,6 +21,7 @@
       },
       {
         "tab": "API Reference",
+        "icon": "box-archive",
         "pages": [
           "index",
           "quickstart",
