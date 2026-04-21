@@ -9,21 +9,15 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "global": {
-      "anchors": [
-        {
-          "anchor": "LightSwap",
-          "icon": "arrow-up-right",
-          "href": "https://lightswap.me"
-        },
-        {
-          "anchor": "Support",
-          "icon": "life-ring",
-          "href": "https://lightswap.me/support"
-        }
-      ]
-    },
     "tabs": [
+      {
+        "tab": "Getting Started",
+        "pages": [
+          "main-info",
+          "support",
+          "faq"
+        ]
+      },
       {
         "tab": "API Reference",
         "pages": [
