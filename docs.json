@@ -9,23 +9,32 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "LightSwap",
+          "icon": "arrow-up-right",
+          "href": "https://lightswap.me"
+        },
+        {
+          "anchor": "Support",
+          "icon": "life-ring",
+          "href": "https://lightswap.me/support"
+        }
+      ]
+    },
     "tabs": [
       {
-        "tab": "Partner API",
-        "groups": [
+        "tab": "API Reference",
+        "pages": [
+          "index",
+          "quickstart",
+          "partner-api/authentication",
+          "partner-api/integration-flow",
+          "partner-api/statuses-errors",
+          "partner-api/limits",
           {
-            "group": "Guides",
-            "pages": [
-              "index",
-              "quickstart",
-              "partner-api/authentication",
-              "partner-api/integration-flow",
-              "partner-api/statuses-errors",
-              "partner-api/limits"
-            ]
-          },
-          {
-            "group": "API reference",
+            "group": "Endpoints",
             "pages": [
               "api-reference/introduction",
               "api-reference/asset",
@@ -37,21 +46,7 @@
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "LightSwap",
-          "href": "https://lightswap.me",
-          "icon": "arrow-up-right"
-        },
-        {
-          "anchor": "Support",
-          "href": "https://lightswap.me/support",
-          "icon": "life-ring"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",

@@ -1,5 +1,5 @@
 ---
-title: "Partner API"
+title: "Introduction"
 description: "Add LightSwap swaps to your website, wallet, app, or project from your backend."
 ---
 
@@ -43,19 +43,15 @@ The MVP flow is exact-input and floating-rate:
   <Step title="List supported assets">
     Use `GET /asset` to load supported assets, networks, decimals, logos, and memo requirements.
   </Step>
-
   <Step title="Validate the payout address">
     Use `POST /address` before creating a swap so your user can fix address mistakes early.
   </Step>
-
   <Step title="Create a quote">
     Use `POST /quote` with the send asset, receive asset, and send amount. Quotes are short-lived.
   </Step>
-
   <Step title="Create the swap">
     Use `POST /swap` with the quote ID, destination address, and an `Idempotency-Key` header.
   </Step>
-
   <Step title="Poll status">
     Use `GET /swap/{id}` until the swap reaches a terminal status.
   </Step>
