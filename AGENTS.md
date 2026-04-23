@@ -2,7 +2,7 @@
 
 ## About this project
 
-- This is the public Mintlify documentation site for the LightSwap Partner API.
+- This is the public Mintlify documentation site for LightSwap Partners.
 - Pages are MDX files with YAML frontmatter.
 - Configuration lives in `docs.json`.
 - Run `mint dev` to preview locally.
@@ -24,3 +24,4 @@
 - Do not promise zero fees. Wallet, gas, and blockchain network costs are separate third-party costs.
 - Do not document unavailable features as live. Webhooks, browser keys, public dashboards, refund endpoints, and per-request custom fees are not included in the MVP.
 - Use `https://lightswap.me/api/partner/v1` as the public API base URL.
+- Keep the site framed as a LightSwap Partners docs hub, not as API-only docs.

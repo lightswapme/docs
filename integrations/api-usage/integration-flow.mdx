@@ -1,14 +1,18 @@
 ---
 title: "Integration flow"
-description: "Understand the quote, swap, deposit, and status flow for partner integrations."
+description: "Understand the quote, swap, deposit, and status flow for API integrations."
 ---
 
-The Partner API separates quote creation from swap creation.
+The API separates quote creation from swap creation.
 
 `POST /quote` gives you a short-lived estimate. `POST /swap` creates the actual swap and returns deposit instructions.
 
 <Note>
   Deposit details are created only after `POST /swap`. Do not ask users to send funds from a quote response.
+</Note>
+
+<Note>
+  Use the exact lowercase `network` values returned by `GET /asset`. Mixed-case partner network values are rejected.
 </Note>
 
 ## Recommended flow
@@ -27,7 +31,7 @@ The Partner API separates quote creation from swap creation.
   </Step>
 
   <Step title="Create the swap">
-    Call `POST /swap` with the quote ID, destination address, and `Idempotency-Key`.
+    Call `POST /swap` with the quote ID and destination address.
   </Step>
 
   <Step title="Show deposit instructions">
@@ -41,24 +45,15 @@ The Partner API separates quote creation from swap creation.
 
 ## Quote lifetime
 
-Partner quotes are short-lived. The quote response includes `expiresAt`.
+Quotes are short-lived. The quote response includes `expiresAt`.
 
 If the quote expires before you create a swap, create a new quote. The API returns `quote_expired` when a quote is no longer valid.
 
-## Idempotency
+## Safe retries
 
-`POST /swap` requires an `Idempotency-Key` header.
+`POST /swap` is retry-safe per `quoteId`.
 
-Use a unique key for each create-swap attempt, such as your order ID plus an action suffix.
-
-```http
-Idempotency-Key: partner-order-123-create
-```
-
-Behavior:
-
-- Same key and same body: returns the same swap.
-- Same key and different body: returns `409 idempotency_conflict`.
+If you repeat the same create-swap call for a quote that already created a swap, LightSwap returns the existing swap instead of creating a new one.
 
 ## Amounts and rates
 

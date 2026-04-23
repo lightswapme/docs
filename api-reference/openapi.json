@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "LightSwap Partner API",
-    "description": "Backend REST API for approved partners to quote, create, and track LightSwap swaps.",
+    "title": "LightSwap API",
+    "description": "Backend REST API for approved LightSwap partners to quote, create, and track swaps.",
     "version": "1.0.0"
   },
   "servers": [
@@ -41,17 +41,17 @@
           "Assets"
         ],
         "summary": "List assets",
-        "description": "Returns active assets available to partners. Filter by network or symbol when you only need part of the asset list.",
+        "description": "Returns active assets available to partners. Filter by canonical lowercase network or symbol when you only need part of the asset list.",
         "operationId": "listPartnerAssets",
         "parameters": [
           {
             "name": "network",
             "in": "query",
             "required": false,
-            "description": "Optional network filter, for example `Tron` or `Bitcoin`.",
+            "description": "Optional canonical lowercase network filter, for example `tron` or `bitcoin`.",
             "schema": {
               "type": "string",
-              "example": "Tron"
+              "example": "tron"
             }
           },
           {
@@ -85,10 +85,9 @@
                       "generatedAt": "2026-04-19T10:00:00.000Z",
                       "assets": [
                         {
-                          "id": "tron-usdt",
                           "symbol": "USDT",
                           "name": "Tether USD",
-                          "network": "Tron",
+                          "network": "tron",
                           "decimals": 6,
                           "contractAddress": "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
                           "logoUrl": "/token/usdt.png",
@@ -106,17 +105,8 @@
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/InactivePartner"
-          },
           "429": {
             "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
           }
         }
       }
@@ -138,9 +128,9 @@
               },
               "examples": {
                 "tronUsdt": {
-                  "summary": "Validate a Tron USDT address",
+                  "summary": "Validate a tron USDT address",
                   "value": {
-                    "network": "Tron",
+                    "network": "tron",
                     "token": "USDT",
                     "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
                     "memo": null
@@ -180,17 +170,8 @@
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/InactivePartner"
-          },
           "429": {
             "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
           }
         }
       }
@@ -215,18 +196,16 @@
                   "summary": "Quote BTC to USDT",
                   "value": {
                     "from": {
-                      "network": "Bitcoin",
+                      "network": "bitcoin",
                       "token": "BTC",
                       "amount": "0.01"
                     },
                     "to": {
-                      "network": "Tron",
+                      "network": "tron",
                       "token": "USDT"
                     },
-                    "externalId": "partner-order-123",
-                    "metadata": {
-                      "customerId": "u_123"
-                    }
+                    "customerId": "u_123",
+                    "externalId": "partner-order-123"
                   }
                 }
               }
@@ -253,16 +232,14 @@
                       "id": "pq_aaaaaaaaaaaaaaaaaaaaaaaa",
                       "expiresAt": "2026-04-19T10:03:00.000Z",
                       "from": {
-                        "assetId": "btc-asset",
                         "decimals": 8,
-                        "network": "Bitcoin",
+                        "network": "bitcoin",
                         "token": "BTC",
                         "amount": "0.01"
                       },
                       "to": {
-                        "assetId": "usdt-asset",
                         "decimals": 6,
-                        "network": "Tron",
+                        "network": "tron",
                         "token": "USDT",
                         "estimatedAmount": "100"
                       },
@@ -279,20 +256,8 @@
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/InactivePartner"
-          },
           "429": {
             "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          },
-          "502": {
-            "$ref": "#/components/responses/RouteUnavailable"
           }
         }
       }
@@ -305,19 +270,6 @@
         "summary": "Create swap",
         "description": "Creates a swap from a partner quote and returns deposit instructions.",
         "operationId": "createPartnerSwap",
-        "parameters": [
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "required": true,
-            "description": "Unique key for this create-swap attempt. Reuse with the same body returns the same swap.",
-            "schema": {
-              "type": "string",
-              "maxLength": 128,
-              "example": "partner-order-123-create"
-            }
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -363,16 +315,14 @@
                       "status": "waiting_deposit",
                       "errorMessage": null,
                       "from": {
-                        "assetId": "btc-asset",
                         "decimals": 8,
-                        "network": "Bitcoin",
+                        "network": "bitcoin",
                         "token": "BTC",
                         "amount": "0.01"
                       },
                       "to": {
-                        "assetId": "usdt-asset",
                         "decimals": 6,
-                        "network": "Tron",
+                        "network": "tron",
                         "token": "USDT",
                         "estimatedAmount": "100"
                       },
@@ -380,14 +330,14 @@
                         "address": "bc1qdeposit",
                         "memo": null,
                         "amount": "0.01",
-                        "network": "Bitcoin",
+                        "network": "bitcoin",
                         "token": "BTC",
                         "deadline": "2026-04-19T10:03:30.000Z"
                       },
                       "payout": {
                         "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
                         "memo": null,
-                        "network": "Tron",
+                        "network": "tron",
                         "token": "USDT",
                         "estimatedAmount": "100"
                       },
@@ -397,7 +347,8 @@
                         "estimatedTimeSeconds": 900
                       },
                       "createdAt": "2026-04-19T10:00:30.000Z",
-                      "updatedAt": "2026-04-19T10:00:30.000Z"
+                      "updatedAt": "2026-04-19T10:00:30.000Z",
+                      "customerId": "u_123"
                     }
                   }
                 }
@@ -407,26 +358,8 @@
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/InactivePartner"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "409": {
-            "$ref": "#/components/responses/Conflict"
-          },
           "429": {
             "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          },
-          "502": {
-            "$ref": "#/components/responses/RouteUnavailable"
           }
         }
       }
@@ -464,6 +397,52 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SwapResponse"
+                },
+                "examples": {
+                  "waitingDeposit": {
+                    "summary": "Swap waiting for deposit",
+                    "value": {
+                      "id": "AB12CD34EF56",
+                      "externalId": "partner-order-123",
+                      "status": "waiting_deposit",
+                      "errorMessage": null,
+                      "from": {
+                        "decimals": 8,
+                        "network": "bitcoin",
+                        "token": "BTC",
+                        "amount": "0.01"
+                      },
+                      "to": {
+                        "decimals": 6,
+                        "network": "tron",
+                        "token": "USDT",
+                        "estimatedAmount": "100"
+                      },
+                      "deposit": {
+                        "address": "bc1qdeposit",
+                        "memo": null,
+                        "amount": "0.01",
+                        "network": "bitcoin",
+                        "token": "BTC",
+                        "deadline": "2026-04-19T10:03:30.000Z"
+                      },
+                      "payout": {
+                        "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
+                        "memo": null,
+                        "network": "tron",
+                        "token": "USDT",
+                        "estimatedAmount": "100"
+                      },
+                      "quote": {
+                        "id": "pq_aaaaaaaaaaaaaaaaaaaaaaaa",
+                        "rate": "10000",
+                        "estimatedTimeSeconds": 900
+                      },
+                      "createdAt": "2026-04-19T10:00:30.000Z",
+                      "updatedAt": "2026-04-19T10:00:30.000Z",
+                      "customerId": "u_123"
+                    }
+                  }
                 }
               }
             }
@@ -471,20 +450,8 @@
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/InactivePartner"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
           "429": {
             "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
           }
         }
       }
@@ -496,7 +463,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key",
-        "description": "Partner API key. Keep this key on your backend."
+        "description": "API key. Keep this key on your backend."
       }
     },
     "headers": {
@@ -527,6 +494,18 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "validationError": {
+                "value": {
+                  "error": {
+                    "code": "validation_error",
+                    "message": "quoteId is invalid.",
+                    "details": {}
+                  },
+                  "requestId": "req_123"
+                }
+              }
             }
           }
         }
@@ -617,6 +596,18 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "rateLimited": {
+                "value": {
+                  "error": {
+                    "code": "rate_limited",
+                    "message": "Too many partner API requests. Please wait a moment and try again.",
+                    "details": {}
+                  },
+                  "requestId": "req_123"
+                }
+              }
             }
           }
         }
@@ -675,7 +666,6 @@
       "Asset": {
         "type": "object",
         "required": [
-          "id",
           "symbol",
           "name",
           "network",
@@ -687,10 +677,6 @@
           "requiresMemo"
         ],
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "LightSwap asset ID."
-          },
           "symbol": {
             "type": "string",
             "example": "USDT"
@@ -701,7 +687,7 @@
           },
           "network": {
             "type": "string",
-            "example": "Tron"
+            "example": "tron"
           },
           "decimals": {
             "type": "integer",
@@ -743,7 +729,7 @@
         "properties": {
           "network": {
             "type": "string",
-            "example": "Tron"
+            "example": "tron"
           },
           "token": {
             "type": "string",
@@ -815,8 +801,14 @@
             "description": "Your order or correlation ID.",
             "example": "partner-order-123"
           },
-          "metadata": {
-            "$ref": "#/components/schemas/PartnerMetadata"
+          "customerId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 128,
+            "description": "Your internal user or customer reference.",
+            "example": "u_123"
           }
         },
         "additionalProperties": false
@@ -831,7 +823,7 @@
         "properties": {
           "network": {
             "type": "string",
-            "example": "Bitcoin"
+            "example": "bitcoin"
           },
           "token": {
             "type": "string",
@@ -854,7 +846,7 @@
         "properties": {
           "network": {
             "type": "string",
-            "example": "Tron"
+            "example": "tron"
           },
           "token": {
             "type": "string",
@@ -862,30 +854,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "PartnerMetadata": {
-        "type": "object",
-        "description": "Optional partner metadata. Maximum 5 fields. Keys must be 64 characters or fewer. Stringified values must be 128 characters or fewer.",
-        "maxProperties": 5,
-        "additionalProperties": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            },
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "example": {
-          "customerId": "u_123"
-        }
       },
       "QuoteResponse": {
         "type": "object",
@@ -947,16 +915,12 @@
       "QuoteFromResponse": {
         "type": "object",
         "required": [
-          "assetId",
           "decimals",
           "network",
           "token",
           "amount"
         ],
         "properties": {
-          "assetId": {
-            "type": "string"
-          },
           "decimals": {
             "type": "integer"
           },
@@ -974,16 +938,12 @@
       "QuoteToResponse": {
         "type": "object",
         "required": [
-          "assetId",
           "decimals",
           "network",
           "token",
           "estimatedAmount"
         ],
         "properties": {
-          "assetId": {
-            "type": "string"
-          },
           "decimals": {
             "type": "integer"
           },
@@ -1058,7 +1018,8 @@
           "payout",
           "quote",
           "createdAt",
-          "updatedAt"
+          "updatedAt",
+          "customerId"
         ],
         "properties": {
           "id": {
@@ -1104,6 +1065,13 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "customerId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "example": "u_123"
           }
         }
       },
@@ -1123,16 +1091,12 @@
       "SwapAssetFrom": {
         "type": "object",
         "required": [
-          "assetId",
           "decimals",
           "network",
           "token",
           "amount"
         ],
         "properties": {
-          "assetId": {
-            "type": "string"
-          },
           "decimals": {
             "type": "integer"
           },
@@ -1150,16 +1114,12 @@
       "SwapAssetTo": {
         "type": "object",
         "required": [
-          "assetId",
           "decimals",
           "network",
           "token",
           "estimatedAmount"
         ],
         "properties": {
-          "assetId": {
-            "type": "string"
-          },
           "decimals": {
             "type": "integer"
           },
@@ -1309,7 +1269,6 @@
       "ErrorCode": {
         "type": "string",
         "enum": [
-          "idempotency_conflict",
           "inactive_partner",
           "internal_error",
           "invalid_api_key",

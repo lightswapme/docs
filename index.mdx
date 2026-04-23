@@ -1,83 +1,54 @@
 ---
 title: "Introduction"
-description: "Add LightSwap swaps to your website, wallet, app, or project from your backend."
+description: "Learn what LightSwap Partners is, what is live today, and where to start."
 ---
 
-The LightSwap Partner API lets approved partners create crypto swaps from their own backend. Your application keeps the user experience, and LightSwap returns quotes, deposit instructions, and status updates through a small REST API.
+LightSwap Partners is the public documentation hub for teams that want to add LightSwap to their product.
+
+Today, the live integration path is backend API usage. Widget integration is planned and will be added here when it is ready.
 
 <Note>
-  Partner API keys are server-side credentials. Do not expose them in browser code, mobile apps, widgets, public repositories, or client-side logs.
+  The API is server-to-server. Keep API keys on your backend and out of browser code, mobile apps, public repositories, and client-side logs.
 </Note>
 
-## Base URL
+If you need API access, onboarding, fee sharing, or want to discuss widget plans, email [partner@laptev-fzco.com](mailto:partner@laptev-fzco.com).
 
-```text
-https://lightswap.me/api/partner/v1
-```
-
-## What you can build
+## What partners can build today
 
 <CardGroup cols={2}>
-  <Card title="Quote-driven swaps" icon="repeat" href="/quickstart">
-    Request a live quote, create a swap from that quote, and show deposit instructions to your user.
+  <Card title="Backend swap flow" icon="repeat" href="/integrations/api-usage/introduction">
+    Quote, create, and track swaps from your own backend while keeping your product experience in front of the user.
   </Card>
 
-  <Card title="Status tracking" icon="circle-check" href="/partner-api/statuses-errors">
-    Poll a swap by ID and display one clear status for the full route.
+  <Card title="Fee sharing" icon="wallet" href="/fee-sharing">
+    See how LightSwap explains partner revenue sharing at a high level and where exact commercial terms are handled.
   </Card>
 
-  <Card title="Asset discovery" icon="coins" href="/api-reference/asset">
-    List active assets and filter by network or symbol before you build your pair selector.
+  <Card title="Widget" icon="plug" href="/integrations/widget/coming-soon">
+    See what is planned for widget-based integration without treating it as a live feature yet.
   </Card>
 
-  <Card title="Backend integration" icon="server" href="/partner-api/authentication">
-    Authenticate with `x-api-key`, pass request IDs, and keep partner credentials private.
+  <Card title="Support" icon="life-ring" href="/support">
+    Get operational help for an existing integration or a specific swap issue.
   </Card>
 </CardGroup>
 
-## Integration model
-
-The MVP flow is exact-input and floating-rate:
-
-<Steps>
-  <Step title="List supported assets">
-    Use `GET /asset` to load supported assets, networks, decimals, logos, and memo requirements.
-  </Step>
-  <Step title="Validate the payout address">
-    Use `POST /address` before creating a swap so your user can fix address mistakes early.
-  </Step>
-  <Step title="Create a quote">
-    Use `POST /quote` with the send asset, receive asset, and send amount. Quotes are short-lived.
-  </Step>
-  <Step title="Create the swap">
-    Use `POST /swap` with the quote ID, destination address, and an `Idempotency-Key` header.
-  </Step>
-  <Step title="Poll status">
-    Use `GET /swap/{id}` until the swap reaches a terminal status.
-  </Step>
-</Steps>
-
-## Public API scope
-
-The Partner API MVP includes:
-
-- Active asset discovery.
-- Destination address validation.
-- Exact-input quote creation.
-- Swap creation from a quote.
-- Swap status lookup.
-- Partner attribution through `externalId` and constrained `metadata`.
-
-It does not include webhooks, browser keys, public dashboards, refund endpoints, or per-request custom fees.
-
-## Next steps
+## Choose your path
 
 <CardGroup cols={2}>
-  <Card title="Quickstart" icon="rocket" href="/quickstart">
-    Make the first quote and swap requests.
+  <Card title="Start integrating" icon="rocket" href="/integrations/api-usage/introduction">
+    Go to API Usage if you want the practical backend flow and the pages engineers need first.
   </Card>
 
-  <Card title="API reference" icon="brackets-curly" href="/api-reference/introduction">
-    Review every endpoint, request body, response, and error.
+  <Card title="Review endpoints" icon="brackets-curly" href="/api-reference/introduction">
+    Go to API Reference if you want request fields, response fields, headers, and endpoint examples.
+  </Card>
+
+  <Card title="Understand fee sharing" icon="wallet" href="/fee-sharing">
+    Go to Fee sharing if you need the high-level commercial model before discussing exact terms with LightSwap.
+  </Card>
+
+  <Card title="Get help" icon="life-ring" href="/support">
+    Go to Support if you already have a live integration or a specific swap and need operational help.
   </Card>
 </CardGroup>

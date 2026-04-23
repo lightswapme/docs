@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "LightSwap Partner API",
+  "name": "LightSwap Partners",
   "colors": {
     "primary": "#0C8C5E",
     "light": "#18E299",
@@ -11,33 +11,55 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Getting Started",
-        "icon": "car-side",
-        "pages": [
-          "main-info",
-          "support",
-          "faq"
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "icon": "box-archive",
-        "pages": [
-          "index",
-          "quickstart",
-          "partner-api/authentication",
-          "partner-api/integration-flow",
-          "partner-api/statuses-errors",
-          "partner-api/limits",
+        "tab": "Partners",
+        "groups": [
           {
-            "group": "Endpoints",
+            "group": "Overview",
+            "icon": "book-open",
+            "pages": [
+              "index",
+              "fee-sharing"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "icon": "plug",
+            "pages": [
+              {
+                "group": "API Usage",
+                "pages": [
+                  "integrations/api-usage/introduction",
+                  "integrations/api-usage/authentication",
+                  "integrations/api-usage/integration-flow",
+                  "integrations/api-usage/statuses-errors",
+                  "integrations/api-usage/limits"
+                ]
+              },
+              {
+                "group": "Widget",
+                "pages": [
+                  "integrations/widget/coming-soon"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "API Reference",
+            "icon": "square-terminal",
             "pages": [
               "api-reference/introduction",
               "api-reference/asset",
               "api-reference/address",
               "api-reference/quote",
-              "api-reference/create-swap",
-              "api-reference/get-swap"
+              "api-reference/swap",
+              "api-reference/swap-status"
+            ]
+          },
+          {
+            "group": "Support",
+            "icon": "life-ring",
+            "pages": [
+              "support"
             ]
           }
         ]
@@ -45,8 +67,8 @@
     ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/full-logo.png",
+    "dark": "/logo/full-logo-dark.png"
   },
   "navbar": {
     "links": [

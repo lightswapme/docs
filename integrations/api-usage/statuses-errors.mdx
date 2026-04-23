@@ -1,9 +1,11 @@
 ---
 title: "Statuses and errors"
-description: "Handle swap statuses, terminal states, and structured API errors."
+description: "Handle LightSwap API swap statuses, terminal states, and structured errors."
 ---
 
-Use `GET /swap/{id}` to show the latest status for a partner-owned swap.
+Use `GET /swap/{id}` to show the latest status for a swap created with your API key.
+
+If you set `externalId` on quote creation, keep it with the swap record and use it as your first support reference. Add the LightSwap swap ID when one already exists.
 
 ## Statuses
 
@@ -47,18 +49,17 @@ All errors use the same response shape.
 | Code | Meaning | Suggested handling |
 | --- | --- | --- |
 | `invalid_api_key` | The API key is missing or invalid. | Check backend configuration. |
-| `inactive_partner` | The partner account is disabled. | Contact LightSwap support. |
+| `inactive_partner` | The partner account is disabled. | Contact the LightSwap partner team by email. |
 | `validation_error` | The request body, headers, or parameters are invalid. | Fix the request and retry. |
 | `unsupported_asset` | The requested asset is not available for that network. | Refresh assets and ask the user to choose another asset. |
 | `unsupported_pair` | The requested pair is not available. | Ask the user to choose another pair or amount. |
 | `quote_not_found` | The quote ID does not exist for this partner. | Create a new quote. |
 | `quote_expired` | The quote expired before swap creation. | Create a new quote. |
-| `quote_already_used` | The quote already created a swap. | Retrieve the created swap if you stored its ID. |
-| `idempotency_conflict` | The idempotency key was reused with a different request body. | Use a new key or resend the original body. |
+| `quote_already_used` | The quote already created a swap. | Retry `POST /swap` with the same `quoteId` or use the stored swap ID. |
 | `rate_limited` | The request limit was exceeded. | Wait for `Retry-After`, then retry. |
 | `provider_unavailable` | A route service is temporarily unavailable. | Retry later or ask the user to choose another pair. |
 | `swap_not_found` | The swap ID does not exist for this partner. | Check the stored swap ID. |
-| `internal_error` | The request failed on the server. | Retry later and contact support with `requestId` if it continues. |
+| `internal_error` | The request failed on the server. | Retry later and contact support with your `externalId` and swap ID if it continues. |
 
 ## Troubleshooting
 
@@ -67,6 +68,6 @@ All errors use the same response shape.
 | Quote expires before the user confirms | Create a new quote and show the updated estimate. |
 | Address validation fails | Ask the user to check the address and selected network. |
 | Swap remains `waiting_deposit` | Confirm the user sent the exact asset to the displayed deposit address before the deadline. |
-| Swap is `underpaid` | Do not ask the user to send more unless LightSwap support tells you to. |
+| Swap is `underpaid` | Do not ask the user to send more unless LightSwap tells you to. |
 | API returns `rate_limited` | Back off using `Retry-After`; avoid tight retry loops. |
-| You need support | Send the swap ID and `x-request-id`; do not send private keys or seed phrases. |
+| You need support | Send `externalId` first, then the swap ID and deposit transaction hash if available. Do not send private keys or seed phrases. |

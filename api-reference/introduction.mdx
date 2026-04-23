@@ -1,9 +1,11 @@
 ---
-title: "API reference"
-description: "Endpoint reference for the LightSwap Partner API."
+title: "Overview"
+description: "Overview of the LightSwap API reference used by partners."
 ---
 
-The API reference is generated from the LightSwap Partner API OpenAPI specification.
+The API reference is generated from the LightSwap API OpenAPI specification.
+
+Use canonical lowercase `network` values such as `solana`, `base`, `bitcoin`, and `tron` when calling the Partner API.
 
 ## Base URL
 
@@ -18,8 +20,6 @@ Every request requires the `x-api-key` header:
 ```http
 x-api-key: <partner_api_key>
 ```
-
-Every response includes an `x-request-id` header. Include that value when you contact support about a request.
 
 ## Endpoint groups
 
@@ -36,7 +36,7 @@ Every response includes an `x-request-id` header. Include that value when you co
     Create a short-lived exact-input quote.
   </Card>
 
-  <Card title="Swaps" icon="repeat" href="/api-reference/create-swap">
+  <Card title="Swaps" icon="repeat" href="/api-reference/swap">
     Create a swap and poll its status.
   </Card>
 </CardGroup>

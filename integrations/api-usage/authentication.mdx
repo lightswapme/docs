@@ -1,0 +1,82 @@
+---
+title: "Authentication"
+description: "Authenticate LightSwap API requests and keep your API key safe."
+---
+
+Every API request must include your API key in the `x-api-key` header.
+
+```http
+x-api-key: <partner_api_key>
+```
+
+API keys are backend credentials. Keep them in server-side configuration, secret storage, or your deployment platform's encrypted environment variables.
+
+<Warning>
+  Do not expose API keys in browser JavaScript, mobile apps, public repositories, screenshots, analytics events, or client-side error logs.
+</Warning>
+
+## Rate limits
+
+API keys have a configured request limit. If you exceed it, the API returns `429 rate_limited`.
+
+The response includes a `Retry-After` header when a retry delay is available.
+
+```http
+Retry-After: 30
+```
+
+Wait at least that many seconds before retrying.
+
+## Error responses
+
+Authentication errors use the shared error shape.
+
+```json
+{
+  "error": {
+    "code": "invalid_api_key",
+    "message": "API key is invalid.",
+    "details": {}
+  },
+  "requestId": "req_123"
+}
+```
+
+Common authentication errors:
+
+| Code | Meaning |
+| --- | --- |
+| `invalid_api_key` | The key is missing or invalid. |
+| `inactive_partner` | The partner account is disabled. |
+| `rate_limited` | The key exceeded its configured request limit. |
+
+## Order attribution
+
+Use `externalId` and optional `customerId` on `POST /quote` to connect a LightSwap quote and swap to your own order or user record.
+
+Use canonical lowercase network values on partner requests. For example, send `bitcoin` and `tron`, not `Bitcoin` or `Tron`.
+
+Treat `externalId` as your primary partner-side reference. Use one stable value per order and keep it from quote creation through support and reconciliation.
+
+```json
+{
+  "customerId": "u_123",
+  "externalId": "partner-order-123",
+  "from": {
+    "network": "bitcoin",
+    "token": "BTC",
+    "amount": "0.01"
+  },
+  "to": {
+    "network": "tron",
+    "token": "USDT"
+  }
+}
+```
+
+Recommended practice:
+
+- always set `externalId` on quote creation
+- keep the same `externalId` when you store the resulting swap ID
+- use `externalId` first when you contact LightSwap about an existing order
+- use `customerId` when you want the swap payload to carry your own user reference
