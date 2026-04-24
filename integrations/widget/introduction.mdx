@@ -1,0 +1,88 @@
+---
+title: "Widget"
+description: "Embed the LightSwap swap flow on your website with an iframe."
+---
+
+The LightSwap widget lets you add the hosted swap flow to your website with an iframe.
+
+Use the widget when you want users to complete the swap flow on your page without building a backend API integration first.
+
+The widget can run without a key. If you have a fee-sharing agreement with LightSwap, add your public widget key so swaps can be attributed to your partner account.
+
+All query parameters are optional. `https://lightswap.me/widget` is a valid widget URL and opens with LightSwap defaults.
+
+<Note>
+  Do not put a Partner API key in the widget. API keys are secret backend credentials. Widget keys are public attribution identifiers.
+</Note>
+
+## Quick start
+
+<Steps>
+  <Step title="Choose optional defaults">
+    Set the starting pair, amount, locale, theme, and accent color in the iframe URL.
+  </Step>
+  <Step title="Paste the iframe">
+    Place the iframe where the widget should appear. No wrapper or custom parent component is required.
+  </Step>
+  <Step title="Add a public widget key if needed">
+    Add `key=YOUR_PUBLIC_WIDGET_KEY` only when LightSwap has issued a key for partner attribution or fee sharing.
+  </Step>
+</Steps>
+
+## Basic iframe
+
+```html
+<iframe
+  title="LightSwap widget"
+  src="https://lightswap.me/widget?from=BTC&to=ETH&amount=10&theme=light&accent=18e299&locale=en"
+  style="border:0;border-radius:24px;display:block;width:441px;max-width:100%;height:570px;"
+  scrolling="no"
+  allow="clipboard-write"
+></iframe>
+```
+
+## Example page
+
+<Card title="Open widget example" icon="plug" href="https://lightswap.me/widget/example">
+  Preview the hosted widget in an iframe.
+</Card>
+
+## Add partner attribution
+
+Use a public widget key only if LightSwap has issued one to you. Add it as the `key` query parameter.
+
+```html
+<iframe
+  title="LightSwap widget"
+  src="https://lightswap.me/widget?key=YOUR_PUBLIC_WIDGET_KEY&from=BTC&to=ETH&amount=10&theme=light&accent=18e299&locale=en"
+  style="border:0;border-radius:24px;display:block;width:441px;max-width:100%;height:570px;"
+  scrolling="no"
+  allow="clipboard-write"
+></iframe>
+```
+
+LightSwap stores partner fee-sharing terms in its own systems. Do not add custom fee or commission parameters to the widget URL.
+
+You do not need to register a domain before embedding the widget. If you use a public widget key, only place it on pages where you want swaps attributed to your partner account.
+
+## Settings
+
+| Parameter | Required | Description |
+| --- | --- | --- |
+| `key` | No | Public widget key for partner attribution. Omit it for unattributed usage. |
+| `from` | No | Initial source token symbol, for example `BTC`. |
+| `to` | No | Initial destination token symbol, for example `ETH`. |
+| `amount` | No | Initial send amount. Use a positive decimal value. |
+| `theme` | No | `light`, `dark`, or `auto`. Defaults to `auto`. |
+| `accent` | No | Hex accent color without `#`, for example `18e299`. |
+| `locale` | No | `en`, `es`, or `ru`. Defaults to `en`. |
+
+<Tip>
+  Keep the iframe itself unframed. The snippet above controls the widget width and height, so you can paste it directly into a page layout.
+</Tip>
+
+## Need a public widget key?
+
+Email [partner@laptev-fzco.com](mailto:partner@laptev-fzco.com) if you want attributed widget usage or fee sharing.
+
+Looking for a backend API integration instead of the iframe widget? Start with [API Usage](/integrations/api-usage/introduction) or go directly to the [API Reference](/api-reference/introduction).

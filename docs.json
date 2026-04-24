@@ -11,7 +11,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Partners",
+        "tab": "Documentation",
         "groups": [
           {
             "group": "Overview",
@@ -38,7 +38,7 @@
               {
                 "group": "Widget",
                 "pages": [
-                  "integrations/widget/coming-soon"
+                  "integrations/widget/introduction"
                 ]
               }
             ]
@@ -67,8 +67,8 @@
     ]
   },
   "logo": {
-    "light": "/logo/full-logo.png",
-    "dark": "/logo/full-logo-dark.png"
+    "light": "/logo/title-logo.png",
+    "dark": "/logo/title-logo-dark.png"
   },
   "navbar": {
     "links": [
@@ -79,7 +79,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Open LightSwap",
+      "label": "Open App",
       "href": "https://lightswap.me"
     }
   },
