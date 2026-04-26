@@ -1,11 +1,11 @@
 ---
 title: "Overview"
-description: "Overview of the LightSwap API reference used by partners."
+description: "Overview of the LightSwap API reference."
 ---
 
 The API reference is generated from the LightSwap API OpenAPI specification.
 
-Use canonical lowercase `network` values such as `solana`, `base`, `bitcoin`, and `tron` when calling the Partner API.
+Use canonical lowercase `network` values such as `solana`, `base`, `bitcoin`, and `tron` when calling the API.
 
 ## Base URL
 
@@ -18,7 +18,7 @@ https://lightswap.me/api/partner/v1
 Every request requires the `x-api-key` header:
 
 ```http
-x-api-key: <partner_api_key>
+x-api-key: <api_key>
 ```
 
 ## Endpoint groups
@@ -49,7 +49,7 @@ Successful responses return the endpoint payload directly. Error responses use a
 {
   "error": {
     "code": "quote_expired",
-    "message": "Partner quote has expired.",
+    "message": "Quote has expired.",
     "details": {}
   },
   "requestId": "request-id"

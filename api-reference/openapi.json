@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "LightSwap API",
-    "description": "Backend REST API for approved LightSwap partners to quote, create, and track swaps.",
+    "description": "Backend REST API for approved LightSwap integrations to quote, create, and track swaps.",
     "version": "1.0.0"
   },
   "servers": [
@@ -27,7 +27,7 @@
     },
     {
       "name": "Quotes",
-      "description": "Short-lived partner quotes."
+      "description": "Short-lived quotes."
     },
     {
       "name": "Swaps",
@@ -41,8 +41,8 @@
           "Assets"
         ],
         "summary": "List assets",
-        "description": "Returns active assets available to partners. Filter by canonical lowercase network or symbol when you only need part of the asset list.",
-        "operationId": "listPartnerAssets",
+        "description": "Returns active assets available through the API. Filter by canonical lowercase network or symbol when you only need part of the asset list.",
+        "operationId": "listAssets",
         "parameters": [
           {
             "name": "network",
@@ -118,7 +118,7 @@
         ],
         "summary": "Validate address",
         "description": "Validates a destination address before swap creation.",
-        "operationId": "validatePartnerAddress",
+        "operationId": "validateAddress",
         "requestBody": {
           "required": true,
           "content": {
@@ -183,7 +183,7 @@
         ],
         "summary": "Create quote",
         "description": "Creates a short-lived floating quote. The MVP supports exact-input quotes only: provide `from.amount` and omit `to.amount`.",
-        "operationId": "createPartnerQuote",
+        "operationId": "createQuote",
         "requestBody": {
           "required": true,
           "content": {
@@ -205,7 +205,7 @@
                       "token": "USDT"
                     },
                     "customerId": "u_123",
-                    "externalId": "partner-order-123"
+                    "externalId": "order-123"
                   }
                 }
               }
@@ -268,8 +268,8 @@
           "Swaps"
         ],
         "summary": "Create swap",
-        "description": "Creates a swap from a partner quote and returns deposit instructions.",
-        "operationId": "createPartnerSwap",
+        "description": "Creates a swap from a quote and returns deposit instructions.",
+        "operationId": "createSwap",
         "requestBody": {
           "required": true,
           "content": {
@@ -311,7 +311,7 @@
                     "summary": "Swap waiting for deposit",
                     "value": {
                       "id": "AB12CD34EF56",
-                      "externalId": "partner-order-123",
+                      "externalId": "order-123",
                       "status": "waiting_deposit",
                       "errorMessage": null,
                       "from": {
@@ -370,8 +370,8 @@
           "Swaps"
         ],
         "summary": "Get swap status",
-        "description": "Returns the latest status and deposit/payout details for a partner-owned swap.",
-        "operationId": "getPartnerSwap",
+        "description": "Returns the latest status and deposit/payout details for a swap created with your API key.",
+        "operationId": "getSwap",
         "parameters": [
           {
             "name": "id",
@@ -403,7 +403,7 @@
                     "summary": "Swap waiting for deposit",
                     "value": {
                       "id": "AB12CD34EF56",
-                      "externalId": "partner-order-123",
+                      "externalId": "order-123",
                       "status": "waiting_deposit",
                       "errorMessage": null,
                       "from": {
@@ -537,8 +537,8 @@
           }
         }
       },
-      "InactivePartner": {
-        "description": "The partner account is disabled.",
+      "InactiveAccess": {
+        "description": "API access is disabled.",
         "headers": {
           "x-request-id": {
             "$ref": "#/components/headers/RequestId"
@@ -553,7 +553,7 @@
         }
       },
       "NotFound": {
-        "description": "The requested quote or swap was not found for this partner.",
+        "description": "The requested quote or swap was not found for your API key.",
         "headers": {
           "x-request-id": {
             "$ref": "#/components/headers/RequestId"
@@ -583,7 +583,7 @@
         }
       },
       "RateLimited": {
-        "description": "The request exceeded the configured partner rate limit.",
+        "description": "The request exceeded the configured API rate limit.",
         "headers": {
           "x-request-id": {
             "$ref": "#/components/headers/RequestId"
@@ -602,7 +602,7 @@
                 "value": {
                   "error": {
                     "code": "rate_limited",
-                    "message": "Too many partner API requests. Please wait a moment and try again.",
+                    "message": "Too many API requests. Please wait a moment and try again.",
                     "details": {}
                   },
                   "requestId": "req_123"
@@ -799,7 +799,7 @@
             ],
             "maxLength": 128,
             "description": "Your order or correlation ID.",
-            "example": "partner-order-123"
+            "example": "order-123"
           },
           "customerId": {
             "type": [
@@ -1032,7 +1032,7 @@
               "string",
               "null"
             ],
-            "example": "partner-order-123"
+            "example": "order-123"
           },
           "status": {
             "$ref": "#/components/schemas/SwapStatus"
@@ -1257,7 +1257,7 @@
           },
           "message": {
             "type": "string",
-            "example": "Partner quote has expired."
+            "example": "Quote has expired."
           },
           "details": {
             "type": "object",

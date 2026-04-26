@@ -5,7 +5,7 @@ description: "Use the LightSwap API from your backend to quote, create, and trac
 
 Use the LightSwap API from your backend when you want to create swaps inside your own product experience.
 
-This page is the best place to start if you are the engineer responsible for the integration.
+Start here if you are the engineer responsible for the integration.
 
 ## Base URL
 
@@ -15,7 +15,7 @@ https://lightswap.me/api/partner/v1
 
 ## How to get access
 
-Email the LightSwap partner team to request API access or discuss your rollout.
+[Contact LightSwap](https://lightswap.me/support) to request API access or discuss your rollout.
 
 Share:
 
@@ -24,8 +24,8 @@ Share:
 - the pairs or networks you expect to support first
 - your target rollout timeline
 
-<Card title="Email partner team" href="mailto:partner@laptev-fzco.com">
-  partner@laptev-fzco.com
+<Card title="Contact LightSwap" href="https://lightswap.me/support">
+  Contact us
 </Card>
 
 ## Recommended integration flow
@@ -53,14 +53,14 @@ Share:
 Set your key on your backend:
 
 ```bash
-export LIGHTSWAP_PARTNER_KEY="lsk_live_..."
+export LIGHTSWAP_API_KEY="lsk_live_..."
 ```
 
 List assets:
 
 ```bash
 curl "https://lightswap.me/api/partner/v1/asset?network=tron&symbol=USDT" \
-  -H "x-api-key: $LIGHTSWAP_PARTNER_KEY"
+  -H "x-api-key: $LIGHTSWAP_API_KEY"
 ```
 
 Validate the destination address:
@@ -68,7 +68,7 @@ Validate the destination address:
 ```bash
 curl -X POST "https://lightswap.me/api/partner/v1/address" \
   -H "content-type: application/json" \
-  -H "x-api-key: $LIGHTSWAP_PARTNER_KEY" \
+  -H "x-api-key: $LIGHTSWAP_API_KEY" \
   -d '{
     "network": "tron",
     "token": "USDT",
@@ -82,7 +82,7 @@ Create a quote:
 ```bash
 curl -X POST "https://lightswap.me/api/partner/v1/quote" \
   -H "content-type: application/json" \
-  -H "x-api-key: $LIGHTSWAP_PARTNER_KEY" \
+  -H "x-api-key: $LIGHTSWAP_API_KEY" \
   -d '{
     "from": {
       "network": "bitcoin",
@@ -94,7 +94,7 @@ curl -X POST "https://lightswap.me/api/partner/v1/quote" \
       "token": "USDT"
     },
     "customerId": "u_123",
-    "externalId": "partner-order-123"
+    "externalId": "order-123"
   }'
 ```
 
@@ -103,7 +103,7 @@ Create the swap:
 ```bash
 curl -X POST "https://lightswap.me/api/partner/v1/swap" \
   -H "content-type: application/json" \
-  -H "x-api-key: $LIGHTSWAP_PARTNER_KEY" \
+  -H "x-api-key: $LIGHTSWAP_API_KEY" \
   -d '{
     "quoteId": "pq_aaaaaaaaaaaaaaaaaaaaaaaa",
     "destination": {
@@ -118,10 +118,10 @@ Poll status:
 
 ```bash
 curl "https://lightswap.me/api/partner/v1/swap/AB12CD34EF56" \
-  -H "x-api-key: $LIGHTSWAP_PARTNER_KEY"
+  -H "x-api-key: $LIGHTSWAP_API_KEY"
 ```
 
-Use the exact lowercase `network` values returned by `GET /asset`. The Partner API rejects mixed-case network names.
+Use the exact lowercase `network` values returned by `GET /asset`. The API rejects mixed-case network names.
 
 ## Where to go next
 

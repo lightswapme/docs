@@ -6,7 +6,7 @@ description: "Authenticate LightSwap API requests and keep your API key safe."
 Every API request must include your API key in the `x-api-key` header.
 
 ```http
-x-api-key: <partner_api_key>
+x-api-key: <api_key>
 ```
 
 API keys are backend credentials. Keep them in server-side configuration, secret storage, or your deployment platform's encrypted environment variables.
@@ -47,21 +47,21 @@ Common authentication errors:
 | Code | Meaning |
 | --- | --- |
 | `invalid_api_key` | The key is missing or invalid. |
-| `inactive_partner` | The partner account is disabled. |
+| `inactive_partner` | API access is disabled. |
 | `rate_limited` | The key exceeded its configured request limit. |
 
 ## Order attribution
 
 Use `externalId` and optional `customerId` on `POST /quote` to connect a LightSwap quote and swap to your own order or user record.
 
-Use canonical lowercase network values on partner requests. For example, send `bitcoin` and `tron`, not `Bitcoin` or `Tron`.
+Use canonical lowercase network values in API requests. For example, send `bitcoin` and `tron`, not `Bitcoin` or `Tron`.
 
-Treat `externalId` as your primary partner-side reference. Use one stable value per order and keep it from quote creation through support and reconciliation.
+Treat `externalId` as your primary reference. Use one stable value per order and keep it from quote creation through support and reconciliation.
 
 ```json
 {
   "customerId": "u_123",
-  "externalId": "partner-order-123",
+  "externalId": "order-123",
   "from": {
     "network": "bitcoin",
     "token": "BTC",

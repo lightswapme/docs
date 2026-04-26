@@ -37,7 +37,7 @@ All errors use the same response shape.
 {
   "error": {
     "code": "quote_expired",
-    "message": "Partner quote has expired.",
+    "message": "Quote has expired.",
     "details": {}
   },
   "requestId": "request-id"
@@ -49,16 +49,16 @@ All errors use the same response shape.
 | Code | Meaning | Suggested handling |
 | --- | --- | --- |
 | `invalid_api_key` | The API key is missing or invalid. | Check backend configuration. |
-| `inactive_partner` | The partner account is disabled. | Contact the LightSwap partner team by email. |
+| `inactive_partner` | API access is disabled. | Contact LightSwap. |
 | `validation_error` | The request body, headers, or parameters are invalid. | Fix the request and retry. |
 | `unsupported_asset` | The requested asset is not available for that network. | Refresh assets and ask the user to choose another asset. |
 | `unsupported_pair` | The requested pair is not available. | Ask the user to choose another pair or amount. |
-| `quote_not_found` | The quote ID does not exist for this partner. | Create a new quote. |
+| `quote_not_found` | The quote ID does not exist for your API key. | Create a new quote. |
 | `quote_expired` | The quote expired before swap creation. | Create a new quote. |
 | `quote_already_used` | The quote already created a swap. | Retry `POST /swap` with the same `quoteId` or use the stored swap ID. |
 | `rate_limited` | The request limit was exceeded. | Wait for `Retry-After`, then retry. |
 | `provider_unavailable` | A route service is temporarily unavailable. | Retry later or ask the user to choose another pair. |
-| `swap_not_found` | The swap ID does not exist for this partner. | Check the stored swap ID. |
+| `swap_not_found` | The swap ID does not exist for your API key. | Check the stored swap ID. |
 | `internal_error` | The request failed on the server. | Retry later and contact support with your `externalId` and swap ID if it continues. |
 
 ## Troubleshooting

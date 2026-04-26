@@ -1,6 +1,6 @@
-# LightSwap Partners Docs
+# LightSwap Documentation
 
-Mintlify documentation for the public LightSwap Partners site.
+Mintlify documentation for the public LightSwap integration site.
 
 ## Local preview
 
@@ -27,8 +27,8 @@ mint broken-links
 
 ## Content boundaries
 
-- Keep these docs public and partner-facing.
+- Keep these docs public and integration-facing.
 - Do not document internal database tables, admin SQL, raw API key generation, or internal service names.
-- Do not expose partner API keys in examples.
+- Do not expose API keys in examples.
 - Use `https://lightswap.me/api/partner/v1` as the production API base URL.
 - Do not present planned integrations as live features.
