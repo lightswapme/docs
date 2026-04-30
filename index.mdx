@@ -1,54 +1,85 @@
 ---
-title: "Introduction"
-description: "Learn how to add LightSwap to your product and where to start."
+title: "What is LightSwap?"
+sidebarTitle: "What is LightSwap?"
+description: "Define desired outcomes instead of managing execution steps"
 ---
 
-LightSwap documentation helps teams add swaps to their product with LightSwap.
+**LightSwap** is a crypto swap product that helps users and businesses exchange tokens across many networks with a fast, private, non-custodial flow.
 
-You can integrate through the backend API or place the hosted widget on your website with an iframe.
+It gives people a simple way to swap crypto with clear rates and no account or KYC required to start. For businesses, LightSwap provides a simple way to offer crypto swaps to users.
 
-<Note>
-  The API is server-to-server. Keep API keys on your backend and out of browser code, mobile apps, public repositories, and client-side logs.
-</Note>
+<div style={{ aspectRatio: "1920 / 670", overflow: "hidden" }}>
+  <img
+    src="/images/lightswap-banner.webp"
+    alt="LightSwap banner showing the LightSwap logo and a crypto swap network illustration."
+    style={{
+      display: "block",
+      height: "100%",
+      objectFit: "cover",
+      objectPosition: "top",
+      width: "100%",
+    }}
+  />
+</div>
 
-If you need API access, onboarding, fee sharing, or a public widget key, [contact LightSwap](https://lightswap.me/support).
+## Built around non-custodial protocols
 
-## What you can build today
+LightSwap is built around non-custodial protocol routes. This means LightSwap does not hold, manage, or control user funds.
 
-<CardGroup cols={2}>
-  <Card title="Backend swap flow" icon="repeat" href="/integrations/api-usage/introduction">
-    Quote, create, and track swaps from your own backend while keeping your product experience in front of the user.
+LightSwap does not use centralized exchanges for user swaps. Instead, it routes swaps through protocols designed for decentralized or trustless execution, including:
+
+<CardGroup cols={3}>
+  <Card title="Chainflip" href="https://docs.chainflip.io/protocol/protocol-overview">
+    A cross-chain liquidity network for native asset swaps, coordinated by a permissionless validator network.
   </Card>
 
-  <Card title="Fee sharing" icon="wallet" href="/fee-sharing">
-    See how LightSwap explains revenue sharing at a high level and where exact commercial terms are handled.
+  <Card title="NEAR Intents" href="https://docs.near.org/chain-abstraction/intents/overview">
+    A multichain transaction protocol where independent solvers compete to complete the user's requested swap.
   </Card>
 
-  <Card title="Widget" icon="plug" href="/integrations/widget/introduction">
-    Place the hosted LightSwap swap flow on your website with an iframe.
-  </Card>
-
-  <Card title="Support" icon="life-ring" href="/support">
-    Get operational help for an existing integration or a specific swap issue.
+  <Card title="Garden" href="https://docs.garden.finance/home/about">
+    A Bitcoin-focused swap and bridge protocol built with intents-based architecture and trustless settlements.
   </Card>
 </CardGroup>
 
-## Choose your path
+## Core features
 
 <CardGroup cols={2}>
-  <Card title="Start integrating" icon="rocket" href="/integrations/api-usage/introduction">
-    Go to API Usage if you want the practical backend flow and the pages engineers need first.
+  <Card title="Clear rates" icon="wallet" horizontal>
+    See the rate before you swap.
   </Card>
 
-  <Card title="Review endpoints" icon="brackets-curly" href="/api-reference/introduction">
-    Go to API Reference if you want request fields, response fields, headers, and endpoint examples.
+  <Card title="Fast swaps" icon="zap" horizontal>
+    Move from quote to swap in a simple flow.
   </Card>
 
-  <Card title="Understand fee sharing" icon="wallet" href="/fee-sharing">
-    Go to Fee sharing if you need the high-level commercial model before discussing exact terms with LightSwap.
+  <Card title="More tokens, more networks" icon="route" horizontal>
+    Swap across many tokens and networks.
   </Card>
 
-  <Card title="Get help" icon="life-ring" href="/support">
-    Go to Support if you already have a live integration or a specific swap and need operational help.
+  <Card title="No account or KYC" icon="lock" horizontal>
+    Start without registration or identity checks.
+  </Card>
+
+  <Card title="Private, non-custodial" icon="shield-check" horizontal>
+    LightSwap never holds user funds.
+  </Card>
+
+  <Card title="24/7 support" icon="life-ring" horizontal>
+    Get help with swaps and integrations.
+  </Card>
+</CardGroup>
+
+For commercial terms, see [Revenue Sharing](/revenue-sharing).
+
+## Start with LightSwap
+
+<CardGroup cols={2}>
+  <Card title="Open LightSwap" icon="arrow-up-right" href="https://lightswap.me">
+    Start a swap in the LightSwap app.
+  </Card>
+
+  <Card title="Explore integrations" icon="plug" href="/integrations/api-usage/introduction">
+    See how businesses can add LightSwap-powered swaps to their product.
   </Card>
 </CardGroup>

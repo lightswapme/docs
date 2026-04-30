@@ -1,18 +1,12 @@
 ---
 title: "Integration flow"
-description: "Understand the quote, swap, deposit, and status flow for API integrations."
+description: "Integrating with the LightSwap API"
 ---
-
-The API separates quote creation from swap creation.
 
 `POST /quote` gives you a short-lived estimate. `POST /swap` creates the actual swap and returns deposit instructions.
 
 <Note>
   Deposit details are created only after `POST /swap`. Do not ask users to send funds from a quote response.
-</Note>
-
-<Note>
-  Use the exact lowercase `network` values returned by `GET /asset`. Mixed-case network values are rejected.
 </Note>
 
 ## Recommended flow
@@ -43,13 +37,7 @@ The API separates quote creation from swap creation.
   </Step>
 </Steps>
 
-## Quote lifetime
-
-Quotes are short-lived. The quote response includes `expiresAt`.
-
-If the quote expires before you create a swap, create a new quote. The API returns `quote_expired` when a quote is no longer valid.
-
-## Safe retries
+## Retries
 
 `POST /swap` is retry-safe per `quoteId`.
 
@@ -60,11 +48,3 @@ If you repeat the same create-swap call for a quote that already created a swap,
 Amount fields are strings. Treat them as decimal strings, not JavaScript numbers.
 
 Quote amounts are estimates. The final received amount can change with floating-rate swaps and network conditions before execution.
-
-Wallet, gas, and blockchain network costs are separate third-party costs.
-
-## Destination memo
-
-Destination memo is not supported in the MVP. Send `null` or omit the memo field.
-
-If a future asset requires memo support, the asset list will expose that through `requiresMemo`.

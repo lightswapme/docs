@@ -1,13 +1,13 @@
 ---
-title: "Widget"
-description: "Embed the LightSwap swap flow on your website with an iframe."
+title: "Introduction"
+description: "Embed the LightSwap swap flow on your website with an iframe"
 ---
 
 The LightSwap widget lets you add the hosted swap flow to your website with an iframe.
 
 Use the widget when you want users to complete the swap flow on your page without building a backend API integration first.
 
-The widget can run without a key. If you have a fee-sharing agreement with LightSwap, add your public widget key so swaps can be attributed to your integration.
+The widget can run without a key. If you have a revenue-sharing agreement with LightSwap, add your public widget key so swaps can be attributed to your integration.
 
 All query parameters are optional. `https://lightswap.me/widget` is a valid widget URL and opens with LightSwap defaults.
 
@@ -25,7 +25,7 @@ All query parameters are optional. `https://lightswap.me/widget` is a valid widg
     Place the iframe where the widget should appear. No wrapper or custom parent component is required.
   </Step>
   <Step title="Add a public widget key if needed">
-    Add `key=YOUR_PUBLIC_WIDGET_KEY` only when LightSwap has issued a key for attribution or fee sharing.
+    Add `key=YOUR_PUBLIC_WIDGET_KEY` only when LightSwap has issued a key for attribution or revenue sharing.
   </Step>
 </Steps>
 
@@ -61,7 +61,7 @@ Use a public widget key only if LightSwap has issued one to you. Add it as the `
 ></iframe>
 ```
 
-LightSwap stores fee-sharing terms in its own systems. Do not add custom fee or commission parameters to the widget URL.
+LightSwap stores revenue-sharing terms in its own systems. Do not add custom fee or commission parameters to the widget URL.
 
 You do not need to register a domain before embedding the widget. If you use a public widget key, only place it on pages where you want swaps attributed to your integration.
 
@@ -83,6 +83,6 @@ You do not need to register a domain before embedding the widget. If you use a p
 
 ## Need a public widget key?
 
-[Contact LightSwap](https://lightswap.me/support) if you want attributed widget usage or fee sharing.
+[Contact LightSwap](https://lightswap.me/support) if you want attributed widget usage or revenue sharing.
 
-Looking for a backend API integration instead of the iframe widget? Start with [API Usage](/integrations/api-usage/introduction) or go directly to the [API Reference](/api-reference/introduction).
+Looking for a backend API integration instead of the iframe widget? Start with [Direct API](/integrations/api-usage/introduction) or go directly to the [API Reference](/api-reference/introduction).

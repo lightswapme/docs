@@ -1,6 +1,6 @@
 ---
 title: "Authentication"
-description: "Authenticate LightSwap API requests and keep your API key safe."
+description: "Authenticate requests and keep your API keys"
 ---
 
 Every API request must include your API key in the `x-api-key` header.
@@ -44,17 +44,17 @@ Authentication errors use the shared error shape.
 
 Common authentication errors:
 
-| Code | Meaning |
-| --- | --- |
-| `invalid_api_key` | The key is missing or invalid. |
-| `inactive_partner` | API access is disabled. |
-| `rate_limited` | The key exceeded its configured request limit. |
+| Code               | Meaning                                        |
+|--------------------|------------------------------------------------|
+| `invalid_api_key`  | The key is missing or invalid.                 |
+| `inactive_partner` | API access is disabled.                        |
+| `rate_limited`     | The key exceeded its configured request limit. |
 
 ## Order attribution
 
-Use `externalId` and optional `customerId` on `POST /quote` to connect a LightSwap quote and swap to your own order or user record.
+Use optional `externalId` and `customerId` on `POST /quote` to connect a LightSwap quote and swap to your own order or user record.
 
-Use canonical lowercase network values in API requests. For example, send `bitcoin` and `tron`, not `Bitcoin` or `Tron`.
+Use canonical lowercase network values in API requests. For example, send `bitcoin` and `tron`.
 
 Treat `externalId` as your primary reference. Use one stable value per order and keep it from quote creation through support and reconciliation.
 

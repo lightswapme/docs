@@ -18,7 +18,7 @@
             "icon": "book-open",
             "pages": [
               "index",
-              "fee-sharing"
+              "revenue-sharing"
             ]
           },
           {
@@ -26,7 +26,7 @@
             "icon": "plug",
             "pages": [
               {
-                "group": "API Usage",
+                "group": "Direct API",
                 "pages": [
                   "integrations/api-usage/introduction",
                   "integrations/api-usage/authentication",
