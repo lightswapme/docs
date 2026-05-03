@@ -24,7 +24,7 @@ This pass does not change the app, the support form, or the Partner API contract
 The docs already have a solid foundation:
 
 - a clean partner-facing information architecture
-- a usable API Usage section
+- a usable Direct API section
 - a real OpenAPI-backed API Reference
 - a high-level fee-sharing page
 - a placeholder widget section
@@ -51,7 +51,7 @@ These decisions were explicitly chosen and should be treated as fixed for this p
 - Make **`externalId`** the primary partner-facing support reference
 - Treat `x-request-id` cleanup as a **later contract cleanup task**
 - Treat the fee-sharing range and partner email as **confirmed public policy**
-- Add API access guidance **inside `Integrations -> API Usage -> Introduction`**
+- Add API access guidance **inside `Integrations -> Direct API -> Introduction`**
 - Keep Widget visible as **coming soon**, but route it to partner email
 - Fix the broken widget icon now
 - Keep this pass **docs-only**, with no app repo implementation changes
@@ -140,7 +140,7 @@ Changes:
 
 The page should remain a partner hub, but it should no longer blur business contact and support.
 
-### 2. API Usage introduction
+### 2. Direct API introduction
 
 This page becomes the primary place to answer:
 
@@ -222,15 +222,15 @@ The cleanup here is narrative, not contract-level.
 ### Files to update
 
 - `index.mdx`
-- `integrations/api-usage/introduction.mdx`
-- `integrations/api-usage/authentication.mdx`
-- `integrations/api-usage/statuses-errors.mdx`
+- `integrations/direct-api/introduction.mdx`
+- `integrations/direct-api/authentication.mdx`
+- `integrations/direct-api/statuses-errors.mdx`
 - `support.mdx`
 - `integrations/widget/coming-soon.mdx`
 
 ### Files that may need light wording alignment
 
-- `integrations/api-usage/limits.mdx`
+- `integrations/direct-api/limits.mdx`
 - `api-reference/introduction.mdx`
 
 ### Files expected to stay substantially unchanged
@@ -293,7 +293,7 @@ After implementation, verify:
 - `mint broken-links`
 - local preview of:
   - home page
-  - API Usage introduction
+  - Direct API introduction
   - Widget coming soon
   - Support
   - Fee sharing
@@ -322,7 +322,7 @@ Mitigation:
 
 Mitigation:
 
-- make API access guidance explicit in `API Usage -> Introduction`
+- make API access guidance explicit in `Direct API -> Introduction`
 - route business/onboarding/widget questions to the partner email from multiple points
 
 ## Result after this pass

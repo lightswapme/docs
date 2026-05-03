@@ -28,11 +28,11 @@
               {
                 "group": "Direct API",
                 "pages": [
-                  "integrations/api-usage/introduction",
-                  "integrations/api-usage/authentication",
-                  "integrations/api-usage/integration-flow",
-                  "integrations/api-usage/statuses-errors",
-                  "integrations/api-usage/limits"
+                  "integrations/direct-api/introduction",
+                  "integrations/direct-api/authentication",
+                  "integrations/direct-api/integration-flow",
+                  "integrations/direct-api/statuses-errors",
+                  "integrations/direct-api/limits"
                 ]
               },
               {

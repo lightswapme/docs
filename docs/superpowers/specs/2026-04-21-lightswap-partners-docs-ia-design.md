@@ -23,7 +23,7 @@ The repo already started moving toward a broader documentation site, but it is s
 - `docs.json` now includes broader sections such as Getting Started, but the actual useful content still lives mostly in the Partner API pages.
 - `main-info.mdx`, `faq.mdx`, and `support.mdx` are placeholders.
 - site-level framing in `docs.json`, `README.md`, and `AGENTS.md` still describes the site primarily as a Partner API docs site.
-- the existing API usage and API reference content is mostly sound and should be preserved where possible.
+- the existing Direct API and API reference content is mostly sound and should be preserved where possible.
 
 This means the best path is a restructure and reframe, not a full rewrite.
 
@@ -54,7 +54,7 @@ The home page should act as a **partner hub**:
 
 - explain what LightSwap partners is
 - explain what can be integrated today
-- route readers into API usage, fee sharing, support, and future widget direction
+- route readers into Direct API, fee sharing, support, and future widget direction
 
 ## Naming model
 
@@ -67,7 +67,7 @@ Important naming decisions:
 
 - site name: **LightSwap partners**
 - do not use `Partner API` as the primary user-facing integration name in navigation
-- use **API Usage** instead of plain `API`
+- use **Direct API** instead of plain `API`
 - keep **API Reference** as the technical reference section name
 
 ## Final information architecture
@@ -80,7 +80,7 @@ Sidebar structure:
   - `Introduction`
   - `Fee sharing`
 - **Integrations**
-  - `API Usage`
+  - `Direct API`
     - `Introduction`
     - `Authentication`
     - `Integration flow`
@@ -110,7 +110,7 @@ It should:
 
 - explain what LightSwap partners is
 - explain what partners can build today
-- link to API Usage, Fee sharing, Widget, and Support
+- link to Direct API, Fee sharing, Widget, and Support
 - feel like a hub page, not like API docs
 
 This page should reuse the existing `index.mdx` path and be rewritten for the new role.
@@ -129,7 +129,7 @@ It must not document internal fee mechanics, exact commercial terms, internal ad
 
 ### Integrations
 
-#### API Usage → Introduction
+#### Direct API → Introduction
 
 This is the main entry page for engineers.
 
@@ -141,7 +141,7 @@ It should:
 
 This page should merge the current API overview and quick-start intent into one clearer entry page.
 
-#### API Usage → Authentication
+#### Direct API → Authentication
 
 Covers:
 
@@ -150,7 +150,7 @@ Covers:
 - rate limits
 - key safety
 
-#### API Usage → Integration flow
+#### Direct API → Integration flow
 
 Covers:
 
@@ -165,7 +165,7 @@ Covers:
 - amount-string handling
 - memo limitation
 
-#### API Usage → Statuses and errors
+#### Direct API → Statuses and errors
 
 Covers:
 
@@ -174,7 +174,7 @@ Covers:
 - shared error format
 - common operational troubleshooting guidance
 
-#### API Usage → Limits
+#### Direct API → Limits
 
 Covers MVP boundaries and what is not supported yet.
 
@@ -221,7 +221,7 @@ It should:
 To keep the site scalable:
 
 - **Overview** must not repeat endpoint-level detail.
-- **API Usage** must not reproduce full API reference tables.
+- **Direct API** must not reproduce full API reference tables.
 - **API Reference** must not carry broad partner-program explanation.
 - **Fee sharing** must not drift into implementation or admin detail.
 - **Support** must stay practical and operational.
@@ -250,7 +250,7 @@ Borrow these patterns:
 
 - from **Xgram**: simple, easy-to-follow usage flow structure
 - from **Changelly**: clear separation between conceptual/usage docs and endpoint reference
-- from **SimpleSwap**: better partner-business framing around API usage
+- from **SimpleSwap**: better partner-business framing around Direct API
 - from **ChangeNOW**: product-family framing that makes multiple integration surfaces feel coherent
 - from **LetsExchange**: strong status/transaction-reference style for later evolution
 - from **Houdini**: focused troubleshooting and status guidance
@@ -266,7 +266,7 @@ Treat this as a restructure, not a from-scratch rewrite.
 ### Keep and repurpose
 
 - rewrite `index.mdx` into the new site-home `Overview → Introduction`
-- preserve and relocate the current API usage pages under `Integrations → API Usage`
+- preserve and relocate the current Direct API pages under `Integrations → Direct API`
 - preserve the OpenAPI-backed endpoint reference under `API Reference`
 
 ### Add
@@ -295,7 +295,7 @@ The restructure is successful if:
    - where fee sharing is described
    - where support lives
 3. A developer can quickly find:
-   - API Usage
+   - Direct API
    - Authentication
    - Integration flow
    - Statuses and errors
@@ -323,7 +323,7 @@ After implementation, verify:
 - one-tab site
 - no top nav menu
 - conservative sidebar structure, not the deeper future-ready version
-- `API Usage` as the integration label
+- `Direct API` as the integration label
 - `Overview` with only:
   - `Introduction`
   - `Fee sharing`
