@@ -6,7 +6,6 @@
 - Pages are MDX files with YAML frontmatter.
 - Configuration lives in `docs.json`.
 - Run `mint dev` to preview locally.
-- Run `mint validate` and `mint broken-links` before publishing changes.
 
 ## Style preferences
 
@@ -26,3 +25,8 @@
 - Do not document unavailable features as live. Webhooks, browser keys, public dashboards, refund endpoints, and per-request custom fees are not included in the MVP.
 - Use `https://lightswap.me/api/partner/v1` as the public API base URL until the real API route changes.
 - Keep the site framed as a LightSwap documentation hub, not as API-only docs.
+
+## Verification contract
+
+- Run `mint validate` and `mint broken-links` after any change and iterate until clean — report the output in your final message.
+- Preview with `mint dev` when layout or components change.
