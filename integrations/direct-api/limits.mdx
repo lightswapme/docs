@@ -1,21 +1,22 @@
 ---
 title: "Limits"
-description: "Review current LightSwap API MVP limits for quote type, polling, commission setup, API keys, memos, and support handoff."
+description: "Current Direct API limits: rate limits, quote lifetime, deposit window, memos, and integration defaults."
 ---
 
-The API MVP is intentionally small. It covers backend quote-driven swap creation and status polling.
+The API is intentionally small: backend quote-driven swap creation and status polling.
 
 ## Current limits
 
 | Area | Current behavior |
 | --- | --- |
-| API keys | Backend-only API keys. |
+| API keys | Backend-only. |
+| Rate limit | 120 requests per minute per API key. Exceeding it returns `429 rate_limited`. |
 | Quote type | Exact-input floating quotes only. |
 | Quote lifetime | Quotes expire 3 minutes after creation; see `expiresAt`. |
 | Deposit window | Send the deposit before `deposit.deadline`, 4 hours after swap creation. |
-| Commission | Configured during onboarding and commercial setup. |
-| Status updates | Poll `GET /swap/{id}`. |
-| Destination memo | Optional on memo-capable networks (XRP Ledger, Stellar, Cosmos), up to 256 characters. Memos execute only on routes that can carry memos; when no such route exists for the pair, swap creation fails with `unsupported_memo`. |
+| Commission | Flat 0.5% of completed swap volume, self-serve. See [Revenue sharing](/business/revenue-sharing). |
+| Status updates | Poll `GET /swap/{id}`. No webhooks. |
+| Destination memo | Optional on memo-capable networks (XRP Ledger, Stellar, Cosmos), up to 256 characters. Swaps fail with `unsupported_memo` when no route can carry a memo. |
 
 ## Integration defaults
 
@@ -33,7 +34,7 @@ The API returns the route estimate and deposit instructions for the swap. Wallet
 When you contact support, include:
 
 - Your `externalId`, if you sent one.
-- LightSwap swap ID, if one exists.
-- Deposit transaction hash, if the user has already sent funds.
+- The LightSwap swap ID, if one exists.
+- The deposit transaction hash, if the user has already sent funds.
 
-Do not include private keys, seed phrases, or full internal customer records.
+Never include private keys, seed phrases, or full internal customer records.

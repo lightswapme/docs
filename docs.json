@@ -8,39 +8,90 @@
     "dark": "#18E299"
   },
   "favicon": "/favicon.svg",
+  "redirects": [
+    {
+      "source": "/revenue-sharing",
+      "destination": "/business/revenue-sharing"
+    }
+  ],
   "navigation": {
     "tabs": [
       {
         "tab": "Documentation",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Introduction",
             "icon": "book-open",
             "pages": [
               "index",
-              "revenue-sharing"
+              "how-swaps-work",
+              "fees-and-rates",
+              "supported-networks",
+              "faq",
+              "glossary"
             ]
           },
           {
-            "group": "Integrations",
-            "icon": "plug",
+            "group": "Swaps",
+            "icon": "repeat",
             "pages": [
-              {
-                "group": "Direct API",
-                "pages": [
-                  "integrations/direct-api/introduction",
-                  "integrations/direct-api/authentication",
-                  "integrations/direct-api/integration-flow",
-                  "integrations/direct-api/statuses-errors",
-                  "integrations/direct-api/limits"
-                ]
-              },
-              {
-                "group": "Widget",
-                "pages": [
-                  "integrations/widget/introduction"
-                ]
-              }
+              "swaps/make-a-swap",
+              "swaps/track-a-swap",
+              "swaps/troubleshooting"
+            ]
+          },
+          {
+            "group": "Account",
+            "icon": "user",
+            "pages": [
+              "account/overview",
+              "account/balances",
+              "account/swap-from-balance",
+              "account/history",
+              "account/referrals",
+              "account/earn",
+              "account/telegram"
+            ]
+          },
+          {
+            "group": "Support",
+            "icon": "life-ring",
+            "pages": [
+              "support"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Business",
+        "groups": [
+          {
+            "group": "Get started",
+            "icon": "rocket",
+            "pages": [
+              "business/overview",
+              "business/quickstart",
+              "business/revenue-sharing",
+              "business/changelog"
+            ]
+          },
+          {
+            "group": "Direct API",
+            "icon": "code",
+            "pages": [
+              "integrations/direct-api/introduction",
+              "integrations/direct-api/authentication",
+              "integrations/direct-api/integration-flow",
+              "integrations/direct-api/statuses-errors",
+              "integrations/direct-api/limits",
+              "integrations/direct-api/refunds"
+            ]
+          },
+          {
+            "group": "Widget",
+            "icon": "app-window",
+            "pages": [
+              "integrations/widget/introduction"
             ]
           },
           {
@@ -53,13 +104,6 @@
               "api-reference/quote",
               "api-reference/swap",
               "api-reference/swap-status"
-            ]
-          },
-          {
-            "group": "Support",
-            "icon": "life-ring",
-            "pages": [
-              "support"
             ]
           }
         ]

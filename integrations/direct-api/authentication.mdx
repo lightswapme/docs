@@ -1,9 +1,9 @@
 ---
 title: "Authentication"
-description: "Authenticate LightSwap API requests with backend-only API keys and learn where those credentials must not be exposed."
+description: "Authenticate LightSwap API requests with backend-only API keys, and learn the rate limits."
 ---
 
-Every API request must include your API key in the `x-api-key` header.
+Every API request includes your API key in the `x-api-key` header.
 
 ```http
 x-api-key: <api_key>
@@ -12,34 +12,30 @@ x-api-key: <api_key>
 API keys are backend credentials. Keep them in server-side configuration, secret storage, or your deployment platform's encrypted environment variables.
 
 <Warning>
-  Do not expose API keys in browser JavaScript, mobile apps, public repositories, screenshots, analytics events, or client-side error logs.
+  Never expose API keys in browser JavaScript, mobile apps, public repositories, screenshots, analytics events, or client-side error logs.
 </Warning>
 
 ## Test keys
 
-You can request a separate test API key with the `lsk_test_` prefix for integration testing.
+You can request a separate test API key with the `lsk_test_` prefix from [support](https://lightswap.me/support).
 
-Test keys run against the live API with real liquidity, so every test swap is a real transaction. Use small amounts.
-
-<Note>
-  There is no sandbox environment. Request a test key from [LightSwap support](https://lightswap.me/support), and keep it separate from your production key.
-</Note>
+Test keys run against the live API with real liquidity, so every test swap is a real transaction. Use small amounts. There is no sandbox environment.
 
 ## Rate limits
 
-API keys have a configured request limit. If you exceed it, the API returns `429 rate_limited`.
+Each API key allows **120 requests per minute**. Exceeding it returns `429` with the `rate_limited` code.
 
-The response includes a `Retry-After` header when a retry delay is available.
+When a retry delay is available, the response includes a `Retry-After` header:
 
 ```http
 Retry-After: 30
 ```
 
-Wait at least that many seconds before retrying.
+Wait at least that many seconds before retrying. Polling a swap every 30 seconds uses a tiny fraction of the limit; the limit exists to catch broken retry loops, not normal usage.
 
-## Error responses
+## Authentication errors
 
-Authentication errors use the shared error shape.
+Errors use the shared error shape:
 
 ```json
 {
@@ -52,21 +48,19 @@ Authentication errors use the shared error shape.
 }
 ```
 
-Common authentication errors:
+| Code | Meaning |
+| --- | --- |
+| `invalid_api_key` | The key is missing or invalid. |
+| `inactive_partner` | API access is disabled for this account. |
 
-| Code               | Meaning                                        |
-|--------------------|------------------------------------------------|
-| `invalid_api_key`  | The key is missing or invalid.                 |
-| `inactive_partner` | API access is disabled.                        |
-| `rate_limited`     | The key exceeded its configured request limit. |
+The full error list, including `rate_limited`, is on [Statuses and errors](/integrations/direct-api/statuses-errors).
 
 ## Order attribution
 
-Use optional `externalId` and `customerId` on `POST /quote` to connect a LightSwap quote and swap to your own order or user record.
+`POST /quote` accepts two optional fields that connect a LightSwap swap to your own records:
 
-Use canonical lowercase network values in API requests. For example, send `bitcoin` and `tron`.
-
-Treat `externalId` as your primary reference. Use one stable value per order and keep it from quote creation through support and reconciliation.
+- `externalId`: your order reference. Set it at quote creation and keep it through support conversations.
+- `customerId`: your user reference, carried on the swap payload.
 
 ```json
 {
@@ -86,7 +80,6 @@ Treat `externalId` as your primary reference. Use one stable value per order and
 
 Recommended practice:
 
-- always set `externalId` on quote creation
-- keep the same `externalId` when you store the resulting swap ID
-- use `externalId` first when you contact LightSwap about an existing order
-- use `customerId` when you want the swap payload to carry your own user reference
+- Always set `externalId` on quote creation.
+- Store the resulting swap ID next to it. The swap ID is the unique reference; LightSwap doesn't enforce `externalId` uniqueness, so treat it as a label, not a key.
+- Quote the `externalId` first when you contact support about an order.

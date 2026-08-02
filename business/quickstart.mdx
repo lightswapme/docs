@@ -1,0 +1,115 @@
+---
+title: "Quickstart"
+description: "Create your first swap through the LightSwap Direct API in about five minutes, from API key to deposit address."
+---
+
+This walkthrough takes you from zero to a created swap: activate a key, list assets, validate an address, quote, swap, poll.
+
+## 1. Get your API key
+
+Sign in on [lightswap.me](https://lightswap.me/account), open **Account → Business**, and select **Activate business account**. The API key is shown once. Copy it and store it somewhere safe.
+
+Set it on your backend:
+
+```bash
+export LIGHTSWAP_API_KEY="lsk_live_..."
+```
+
+<Warning>
+  API keys are backend credentials. Never put one in browser code, a mobile app, or a public repository.
+</Warning>
+
+## 2. List assets
+
+```bash
+curl "https://lightswap.me/api/partner/v1/asset?network=tron&symbol=USDT" \
+  -H "x-api-key: $LIGHTSWAP_API_KEY"
+```
+
+The response gives you canonical lowercase network values, decimals, and memo requirements. Use these exact values in later calls.
+
+## 3. Validate the destination address
+
+```bash
+curl -X POST "https://lightswap.me/api/partner/v1/address" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $LIGHTSWAP_API_KEY" \
+  -d '{
+    "network": "tron",
+    "token": "USDT",
+    "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
+    "memo": null
+  }'
+```
+
+Do this before quoting so your users catch address mistakes early.
+
+## 4. Create a quote
+
+```bash
+curl -X POST "https://lightswap.me/api/partner/v1/quote" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $LIGHTSWAP_API_KEY" \
+  -d '{
+    "from": {
+      "network": "bitcoin",
+      "token": "BTC",
+      "amount": "0.01"
+    },
+    "to": {
+      "network": "tron",
+      "token": "USDT"
+    },
+    "customerId": "u_123",
+    "externalId": "order-123"
+  }'
+```
+
+Quotes live for 3 minutes. Amounts are decimal strings.
+
+## 5. Create the swap
+
+```bash
+curl -X POST "https://lightswap.me/api/partner/v1/swap" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $LIGHTSWAP_API_KEY" \
+  -d '{
+    "quoteId": "pq_aaaaaaaaaaaaaaaaaaaaaaaa",
+    "destination": {
+      "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
+      "memo": null
+    },
+    "notificationEmail": "optional@example.com"
+  }'
+```
+
+The response contains the deposit instructions: address, amount, network, token, and deadline. **Only now should your user send funds.** A quote response never carries deposit details.
+
+## 6. Poll the status
+
+```bash
+curl "https://lightswap.me/api/partner/v1/swap/AB12CD34EF56" \
+  -H "x-api-key: $LIGHTSWAP_API_KEY"
+```
+
+Poll every 30 seconds until the status is terminal: `completed`, `refunded`, `failed`, or `expired`.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Integration flow" icon="plug" href="/integrations/direct-api/integration-flow">
+    Memos, refund addresses, and retry behavior in detail.
+  </Card>
+
+  <Card title="Statuses and errors" icon="circle-check" href="/integrations/direct-api/statuses-errors">
+    Every status and error code, with suggested handling.
+  </Card>
+
+  <Card title="Limits" icon="gauge" href="/integrations/direct-api/limits">
+    Rate limits, quote lifetime, and deposit windows.
+  </Card>
+
+  <Card title="API Reference" icon="brackets-curly" href="/api-reference/introduction">
+    Request and response fields for every endpoint.
+  </Card>
+</CardGroup>

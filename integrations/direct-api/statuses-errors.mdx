@@ -1,33 +1,24 @@
 ---
 title: "Statuses and errors"
-description: "Map LightSwap swap statuses, terminal states, and structured API errors to user-facing messages and support handling."
+description: "Map LightSwap swap statuses, terminal states, and structured API errors to handling in your integration."
 ---
 
-Use `GET /swap/{id}` to show the latest status for a swap created with your API key.
-
-If you set `externalId` on quote creation, keep it with the swap record and use it as your first support reference. Add the LightSwap swap ID when one already exists.
+`GET /swap/{id}` returns the latest status for a swap created with your API key. Poll every 30 seconds while the status is not terminal.
 
 ## Statuses
 
-| Status             | Meaning                                                  |
-|--------------------|----------------------------------------------------------|
-| `waiting_deposit`  | Waiting for the user to send funds.                      |
+| Status | Meaning |
+| --- | --- |
+| `waiting_deposit` | Waiting for the user to send funds. |
 | `deposit_detected` | A deposit was detected and is waiting for confirmations. |
-| `underpaid`        | The detected deposit amount was incomplete.              |
-| `processing`       | The swap is being processed.                             |
-| `completed`        | The swap finished.                                       |
-| `refunded`         | Funds were refunded.                                     |
-| `failed`           | The swap failed.                                         |
-| `expired`          | The deposit was not detected before the deadline.        |
+| `underpaid` | The detected deposit amount was incomplete. |
+| `processing` | The swap is being processed. |
+| `completed` | The swap finished. |
+| `refunded` | Funds were refunded. |
+| `failed` | The swap failed. |
+| `expired` | The deposit was not detected before the deadline. |
 
-Terminal statuses:
-
-- `completed`
-- `refunded`
-- `failed`
-- `expired`
-
-Poll every 30 seconds while the status is not terminal.
+Terminal statuses: `completed`, `refunded`, `failed`, `expired`.
 
 ### Underpaid swaps
 
@@ -35,7 +26,7 @@ Poll every 30 seconds while the status is not terminal.
 
 ## Error format
 
-All errors use the same response shape.
+All errors use the same response shape:
 
 ```json
 {
@@ -50,28 +41,30 @@ All errors use the same response shape.
 
 ## Error codes
 
-| Code                   | Meaning                                                | Suggested handling                                                                  |
-|------------------------|--------------------------------------------------------|-------------------------------------------------------------------------------------|
-| `invalid_api_key`      | The API key is missing or invalid.                     | Check backend configuration.                                                        |
-| `inactive_partner`     | API access is disabled.                                | Contact LightSwap.                                                                  |
-| `validation_error`     | The request body, headers, or parameters are invalid.  | Fix the request and retry.                                                          |
-| `unsupported_asset`    | The requested asset is not available for that network. | Refresh assets and ask the user to choose another asset.                            |
-| `unsupported_memo`     | A memo was supplied for a network that does not support memos, or no route that can carry a memo is available for the pair. | Remove the memo and retry, or use a self-custody destination address or another pair. |
-| `unsupported_pair`     | The requested pair is not available.                   | Ask the user to choose another pair or amount.                                      |
-| `quote_not_found`      | The quote ID does not exist for your API key.          | Create a new quote.                                                                 |
-| `quote_expired`        | The quote expired before swap creation.                | Create a new quote.                                                                 |
-| `quote_already_used`   | The quote already created a swap.                      | Repeating `POST /swap` with the same `quoteId` returns the existing swap. If you still see this error, create a new quote. |
-| `rate_limited`         | The request limit was exceeded.                        | Wait for `Retry-After`, then retry.                                                 |
-| `provider_unavailable` | A route service is temporarily unavailable.            | Retry later or ask the user to choose another pair.                                 |
-| `swap_not_found`       | The swap ID does not exist for your API key.           | Check the stored swap ID.                                                           |
-| `internal_error`       | The request failed on the server.                      | Retry later and contact support with your `externalId` and swap ID if it continues. |
+| Code | Meaning | Suggested handling |
+| --- | --- | --- |
+| `invalid_api_key` | The API key is missing or invalid. | Check backend configuration. |
+| `inactive_partner` | API access is disabled. | Contact LightSwap. |
+| `validation_error` | The request body, headers, or parameters are invalid. | Fix the request and retry. |
+| `unsupported_asset` | The requested asset is not available for that network. | Refresh assets and ask the user to choose another asset. |
+| `unsupported_memo` | A memo was supplied for a network that does not support memos, or no route that can carry a memo is available for the pair. | Remove the memo and retry, or use a self-custody destination or another pair. |
+| `unsupported_pair` | The requested pair is not available. | Ask the user to choose another pair or amount. |
+| `quote_not_found` | The quote ID does not exist for your API key. | Create a new quote. |
+| `quote_expired` | The quote expired before swap creation. | Create a new quote. |
+| `quote_already_used` | The quote already created a swap. | Repeating `POST /swap` with the same `quoteId` returns the existing swap. If you still see this error, create a new quote. |
+| `rate_limited` | The request limit was exceeded. | Wait for `Retry-After`, then retry. |
+| `provider_unavailable` | A route service is temporarily unavailable. | Retry later or ask the user to choose another pair. |
+| `swap_not_found` | The swap ID does not exist for your API key. | Check the stored swap ID. |
+| `internal_error` | The request failed on the server. | Retry later. If it continues, contact support with your `externalId` and swap ID. |
 
 ## Troubleshooting
 
-| Situation                              | What to do                                                                                  |
-|----------------------------------------|---------------------------------------------------------------------------------------------|
-| Quote expires before the user confirms | Create a new quote and show the updated estimate.                                           |
-| Address validation fails               | Ask the user to check the address and selected network.                                     |
-| Swap remains `waiting_deposit`         | Confirm the user sent the exact asset to the displayed deposit address before the deadline. |
-| Swap is `underpaid`                    | Do not ask the user to send more unless LightSwap tells you to.                             |
-| API returns `rate_limited`             | Back off using `Retry-After`; avoid tight retry loops.                                      |
+| Situation | What to do |
+| --- | --- |
+| Quote expires before the user confirms | Create a new quote and show the updated estimate. |
+| Address validation fails | Ask the user to check the address and selected network. |
+| Swap remains `waiting_deposit` | Confirm the user sent the exact asset to the displayed deposit address before the deadline. |
+| Swap is `underpaid` | Do not ask the user to send more unless LightSwap tells you to. |
+| API returns `rate_limited` | Back off using `Retry-After`; avoid tight retry loops. |
+
+For what to tell end users when a swap goes wrong, see [Refunds](/integrations/direct-api/refunds).

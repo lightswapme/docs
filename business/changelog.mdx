@@ -1,0 +1,26 @@
+---
+title: "Changelog"
+description: "Partner-facing changes to the LightSwap API, widget, and revenue sharing."
+---
+
+Partner-facing changes, newest first. Breaking changes are announced here before they ship.
+
+## July 2026
+
+**Destination memos, refund addresses, and longer deposit windows**
+
+- Destination memo support for memo-capable networks (XRP Ledger, Stellar, Cosmos). Set `to.memo` on the quote or `destination.memo` on the swap. Swaps fail with `unsupported_memo` when no route can carry the memo.
+- `POST /swap` accepts `refundAddress`, an address on the sending network that receives the funds back if the swap is refunded.
+- Deposit window extended to 4 hours after swap creation, shown as `deposit.deadline`.
+- Test API keys with the `lsk_test_` prefix are available from support. They run against live liquidity, so test with small amounts.
+- Repeating `POST /swap` with the same `quoteId` returns the existing swap instead of an error.
+
+**Partner API MVP**
+
+- Initial release: `GET /asset`, `POST /address`, `POST /quote`, `POST /swap`, `GET /swap/{id}`.
+- Self-serve activation from Account → Business with instant API and widget keys.
+- Flat 0.5% commission in USDC, claimable from 10 USDC.
+
+## Known gaps
+
+Not yet available: webhooks, a transaction-history endpoint, browser-side keys, refund endpoints, per-request custom fees, fixed-rate quotes. If one of these blocks your integration, [tell us](https://lightswap.me/support).

@@ -1,0 +1,34 @@
+---
+title: "Add swaps to your product"
+sidebarTitle: "Overview"
+description: "Three ways to integrate LightSwap: the widget, the Direct API, or a referral link. Pick the one that fits your product."
+---
+
+LightSwap gives businesses three ways in. All three are self-serve. The widget and the API start from **Account → Business** on [lightswap.me](https://lightswap.me/account); referral links live in **Account → Referrals**.
+
+## Choose your integration
+
+| | Widget | Direct API | Referral link |
+| --- | --- | --- | --- |
+| Setup time | Minutes | A day of development | None |
+| What you need | A webpage | A backend | An audience |
+| User experience | Hosted swap UI on your page | Fully your own UI | LightSwap website |
+| You earn | 0.5% of swap volume | 0.5% of swap volume | 0.25% of swap volume |
+
+**Widget.** An iframe that puts the full swap flow on your page. No backend, no API key. Add a public widget key and completed swaps earn you commission. [Widget docs](/integrations/widget/introduction).
+
+**Direct API.** Your backend creates quotes and swaps, your UI stays entirely yours. Built for wallets, exchanges, aggregators, and payment products. Start with the [quickstart](/business/quickstart).
+
+**Referral link.** No integration at all. Share your link and earn from swaps your audience makes on LightSwap. Individuals use this too. [Referrals](/account/referrals).
+
+## What partners get
+
+- A flat **0.5% of completed swap volume**, credited in USDC, for API and widget integrations.
+- A dashboard with attributed volume, swap count, fee history, and payout history.
+- Claims from **10 USDC**, paid to your LightSwap account balance.
+
+Details and payout mechanics: [Revenue sharing](/business/revenue-sharing).
+
+## What the API covers today
+
+The Direct API handles the full swap cycle: list assets, validate addresses, create quotes, create swaps, poll status. It does not yet offer webhooks, a transaction-history endpoint, or per-request custom fees. The full list is on the [Direct API introduction](/integrations/direct-api/introduction).

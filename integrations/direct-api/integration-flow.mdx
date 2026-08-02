@@ -1,35 +1,35 @@
 ---
 title: "Integration flow"
-description: "Follow the recommended Direct API sequence for loading assets, creating quotes, creating swaps, and polling status."
+description: "The recommended Direct API sequence: load assets, validate addresses, quote, swap, poll."
 ---
 
 `POST /quote` gives you a short-lived estimate. `POST /swap` creates the actual swap and returns deposit instructions.
 
 <Note>
-  Deposit details are created only after `POST /swap`. Do not ask users to send funds from a quote response.
+  Deposit details exist only after `POST /swap`. Never ask users to send funds based on a quote response.
 </Note>
 
-## Recommended flow
+## The sequence
 
 <Steps>
   <Step title="Load assets">
-    Call `GET /asset` when your app needs supported networks, token symbols, decimals, logos, and memo requirements.
+    Call `GET /asset` for supported networks, token symbols, decimals, logos, and memo requirements. Refresh regularly instead of hardcoding the list.
   </Step>
 
   <Step title="Validate the payout address">
-    Call `POST /address` after the user enters a destination address. On memo-capable networks (XRP Ledger, Stellar, Cosmos), pass the destination `memo` when the payout needs one. The response field `supportsMemo` tells you whether the network can carry a memo. A memo on a network that does not support memos fails with `unsupported_memo`.
+    Call `POST /address` after the user enters a destination address. On memo-capable networks (XRP Ledger, Stellar, Cosmos), pass the destination `memo` when the payout needs one. The response field `supportsMemo` tells you whether the network can carry a memo. A memo on a network that doesn't support memos fails with `unsupported_memo`.
   </Step>
 
   <Step title="Create a quote">
-    Call `POST /quote` with the send asset, receive asset, and exact send amount. When the payout needs a memo, include it as `to.memo` so the estimate reflects the route that carries the memo.
+    Call `POST /quote` with the send asset, receive asset, and exact send amount. When the payout needs a memo, include it as `to.memo` so the estimate reflects a route that can carry it.
   </Step>
 
   <Step title="Create the swap">
-    Call `POST /swap` with the quote ID and destination address. Pass the destination memo as `destination.memo` when the payout needs one — a memo set here overrides the `to.memo` from the quote. Memos execute only on routes that can carry memos; when no such route exists for the pair, creation fails with `unsupported_memo`. Optionally pass `refundAddress` — an address on the sending network that receives the funds back if the swap is refunded. When omitted, LightSwap uses its configured network refund address.
+    Call `POST /swap` with the quote ID and destination address. Pass the destination memo as `destination.memo` when the payout needs one. A memo set here overrides the `to.memo` from the quote. If no route for the pair can carry a memo, creation fails with `unsupported_memo`. Optionally pass `refundAddress`: an address on the sending network that receives the funds back if the swap is refunded. When omitted, LightSwap uses its configured network refund address.
   </Step>
 
   <Step title="Show deposit instructions">
-    Display the `deposit.address`, `deposit.memo`, `deposit.amount`, `deposit.network`, `deposit.token`, and `deposit.deadline` from the swap response.
+    Display `deposit.address`, `deposit.memo`, `deposit.amount`, `deposit.network`, `deposit.token`, and `deposit.deadline` from the swap response.
   </Step>
 
   <Step title="Track the swap">
@@ -39,12 +39,14 @@ description: "Follow the recommended Direct API sequence for loading assets, cre
 
 ## Retries
 
-`POST /swap` is retry-safe per `quoteId`.
-
-If you repeat the same create-swap call for a quote that already created a swap, LightSwap returns the existing swap instead of creating a new one.
+`POST /swap` is retry-safe per `quoteId`. Repeating the same create-swap call for a quote that already produced a swap returns the existing swap instead of creating a second one.
 
 ## Amounts and rates
 
 Amount fields are strings. Treat them as decimal strings, not JavaScript numbers.
 
-Quote amounts are estimates. The final received amount can change with floating-rate swaps and network conditions before execution.
+Quote amounts are estimates. The final received amount can move with market prices and network conditions before execution. See [Fees and rates](/fees-and-rates) for the user-facing explanation.
+
+## Status emails
+
+`POST /swap` accepts an optional `notificationEmail`. LightSwap emails that address when the swap reaches a final state: completed, failed, or refunded. Use it to keep your user informed without building notifications yourself.

@@ -1,9 +1,9 @@
 ---
 title: "Overview"
-description: "Review the LightSwap API base URL, authentication model, endpoint list, and integration notes for partner swap flows."
+description: "The LightSwap API reference: base URL, authentication, endpoint list, and the shared error format."
 ---
 
-The API reference is generated from the LightSwap API OpenAPI specification.
+This reference is generated from the LightSwap API OpenAPI specification. Each endpoint page documents request fields, response fields, and every error response with examples.
 
 Use canonical lowercase `network` values such as `solana`, `base`, `bitcoin`, and `tron` when calling the API.
 
@@ -21,7 +21,7 @@ Every request requires the `x-api-key` header:
 x-api-key: <api_key>
 ```
 
-## Endpoint groups
+## Endpoints
 
 <CardGroup cols={2}>
   <Card title="Assets" icon="coins" href="/api-reference/asset">
@@ -56,4 +56,4 @@ Successful responses return the endpoint payload directly. Error responses use a
 }
 ```
 
-Use the endpoint pages in this section for request fields, response fields, headers, and examples.
+The endpoint pages show which status codes each endpoint returns and which error codes come with them. [Statuses and errors](/integrations/direct-api/statuses-errors) lists every code with suggested handling.

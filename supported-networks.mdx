@@ -1,0 +1,31 @@
+---
+title: "Supported networks and assets"
+description: "LightSwap supports 1,000+ assets across dozens of networks, with cross-chain swaps in both directions. Here's how to check a pair."
+---
+
+LightSwap supports 1,000+ assets across dozens of networks, including Bitcoin, Ethereum, Solana, Tron, TON, BNB Chain, Arbitrum, and Base.
+
+## The list is live
+
+Routes change as we add or retire them, so a fixed list here would go stale. The asset picker in [the app](https://lightswap.me) shows what you can swap right now. Integrations get the same list from [`GET /asset`](/api-reference/asset).
+
+## Cross-chain swaps
+
+Any supported pair works across networks: BTC to SOL, ETH to USDT on Tron, and so on. It's one swap, not a bridge plus a swap. You send one asset and receive the other.
+
+Cross-chain swaps take longer than same-network ones because two blockchains must confirm. Expect minutes on fast networks and longer when Bitcoin or a congested network is involved.
+
+## One coin, several networks
+
+Some assets exist on several networks. USDT, for example, is available on Ethereum, Tron, BNB Chain, and others. When you pick such an asset, you also pick its network. Two things must match:
+
+- The payout network must match your receiving wallet.
+- The deposit network must match the network your wallet sends on.
+
+Sending on the wrong network is the most common cause of failed swaps. If it happens, don't send more. See the [FAQ](/faq) and contact [support](/support).
+
+## Memos and destination tags
+
+Some networks, including XRP, Stellar, and Cosmos, use a memo or destination tag in addition to the address. If the swap form asks for one, copy it exactly.
+
+The memo matters most when you receive coins on an exchange account or hosted wallet: it tells them the deposit is yours. A missing or wrong memo can leave coins unclaimed at the right address.

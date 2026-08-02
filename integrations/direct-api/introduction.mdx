@@ -1,11 +1,11 @@
 ---
 title: "Introduction"
-description: "Use the LightSwap Direct API from your backend to quote, create, and track swaps inside your product experience."
+description: "Use the LightSwap Direct API from your backend to quote, create, and track swaps inside your own product."
 ---
 
-Use the LightSwap API from your backend when you want to create swaps inside your own product experience.
+The Direct API lets your backend create swaps inside your own product experience. Your UI stays yours; LightSwap supplies the quotes, the deposit instructions, and the execution.
 
-Start here if you are the engineer responsible for the integration.
+Start here if you're the engineer responsible for the integration.
 
 ## Base URL
 
@@ -13,127 +13,52 @@ Start here if you are the engineer responsible for the integration.
 https://lightswap.me/api/partner/v1
 ```
 
-## How to get access
+## Get access
 
-Activate a business account from **Account → Business** on [lightswap.me](https://lightswap.me/account). Your live API key is created instantly and shown once — copy it and store it somewhere safe.
+Activate a business account from **Account → Business** on [lightswap.me](https://lightswap.me/account). Your live API key is created instantly and shown once. Copy it and store it somewhere safe.
 
-<Card title="Open your account" icon="key" href="https://lightswap.me/account">
-  Activate and copy your API key
-</Card>
+Then follow the [quickstart](/business/quickstart) to create your first swap in about five minutes.
 
 For custom rates, test keys, or a dedicated rollout, [email us](mailto:partner@laptev-fzco.com?subject=LightSwap%20Direct%20API%20access).
 
-## Recommended integration flow
+## The five endpoints
 
-<Steps>
-  <Step title="Load assets">
-    Use `GET /asset` to build your pair selector and confirm canonical lowercase network values, decimals, and memo requirements.
-  </Step>
-  <Step title="Validate the destination address">
-    Use `POST /address` before creating a quote so the user can correct address mistakes early.
-  </Step>
-  <Step title="Create a quote">
-    Use `POST /quote` with the send asset, receive asset, and exact send amount.
-  </Step>
-  <Step title="Create the swap">
-    Use `POST /swap` with the quote ID and destination address.
-  </Step>
-  <Step title="Poll status">
-    Use `GET /swap/{id}` until the swap reaches a terminal status.
-  </Step>
-</Steps>
+| Endpoint | What it does |
+| --- | --- |
+| `GET /asset` | Lists supported assets, networks, decimals, and memo requirements. |
+| `POST /address` | Validates a destination address before you quote. |
+| `POST /quote` | Creates a short-lived quote for a pair and amount. |
+| `POST /swap` | Creates the swap and returns deposit instructions. |
+| `GET /swap/{id}` | Returns the current swap status. |
 
-## First requests
+## What the API doesn't have yet
 
-Set your key on your backend:
+Being explicit saves you an integration surprise:
 
-```bash
-export LIGHTSWAP_API_KEY="lsk_live_..."
-```
-
-List assets:
-
-```bash
-curl "https://lightswap.me/api/partner/v1/asset?network=tron&symbol=USDT" \
-  -H "x-api-key: $LIGHTSWAP_API_KEY"
-```
-
-Validate the destination address:
-
-```bash
-curl -X POST "https://lightswap.me/api/partner/v1/address" \
-  -H "content-type: application/json" \
-  -H "x-api-key: $LIGHTSWAP_API_KEY" \
-  -d '{
-    "network": "tron",
-    "token": "USDT",
-    "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
-    "memo": null
-  }'
-```
-
-Create a quote:
-
-```bash
-curl -X POST "https://lightswap.me/api/partner/v1/quote" \
-  -H "content-type: application/json" \
-  -H "x-api-key: $LIGHTSWAP_API_KEY" \
-  -d '{
-    "from": {
-      "network": "bitcoin",
-      "token": "BTC",
-      "amount": "0.01"
-    },
-    "to": {
-      "network": "tron",
-      "token": "USDT"
-    },
-    "customerId": "u_123",
-    "externalId": "order-123"
-  }'
-```
-
-Create the swap:
-
-```bash
-curl -X POST "https://lightswap.me/api/partner/v1/swap" \
-  -H "content-type: application/json" \
-  -H "x-api-key: $LIGHTSWAP_API_KEY" \
-  -d '{
-    "quoteId": "pq_aaaaaaaaaaaaaaaaaaaaaaaa",
-    "destination": {
-      "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
-      "memo": null
-    },
-    "notificationEmail": "optional@example.com"
-  }'
-```
-
-Poll status:
-
-```bash
-curl "https://lightswap.me/api/partner/v1/swap/AB12CD34EF56" \
-  -H "x-api-key: $LIGHTSWAP_API_KEY"
-```
-
-Use the exact lowercase `network` values returned by `GET /asset`. The API rejects mixed-case network names.
+- No webhooks. Poll `GET /swap/{id}` instead.
+- No transaction-history endpoint. Store swap IDs and `externalId` values on your side.
+- No browser-side keys. The API is backend-only.
+- No refund endpoints. Refunds are handled case by case; see [Refunds](/integrations/direct-api/refunds).
+- No per-request custom fees. Commission is the flat partner rate on your account.
+- No fixed-rate quotes. All quotes are floating.
+- No sandbox. Test keys run against live liquidity, so test with small amounts.
 
 ## Where to go next
 
 <CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/business/quickstart">
+    Your first swap in about five minutes, with curl examples.
+  </Card>
+
   <Card title="Authentication" icon="shield-check" href="/integrations/direct-api/authentication">
-    Review API keys, `externalId`, `customerId`, and rate limits.
+    API keys, rate limits, and order attribution.
   </Card>
 
   <Card title="Integration flow" icon="plug" href="/integrations/direct-api/integration-flow">
-    See the recommended quote-to-swap flow in more detail.
-  </Card>
-
-  <Card title="Statuses and errors" icon="circle-check" href="/integrations/direct-api/statuses-errors">
-    Handle terminal states, retry behavior, and troubleshooting.
+    The quote-to-swap sequence in detail.
   </Card>
 
   <Card title="API Reference" icon="brackets-curly" href="/api-reference/introduction">
-    Review request fields, response fields, and endpoint examples.
+    Request fields, response fields, and examples.
   </Card>
 </CardGroup>

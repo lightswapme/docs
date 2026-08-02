@@ -1,0 +1,41 @@
+---
+title: "Refunds"
+description: "When LightSwap swaps get refunded, how refundAddress works, and what to tell your users."
+---
+
+Most swaps complete. When one can't, the deposit comes back. This page covers how that works and what your integration should do.
+
+## When a swap gets refunded
+
+A swap ends as `refunded` when the route can't complete after a deposit arrived. The common triggers:
+
+- The deposit arrived after the deadline.
+- The deposit was underpaid and the route couldn't settle it.
+- A route failure made the swap impossible to complete.
+
+`refunded` is a terminal status. Once you see it, the funds are on their way back.
+
+## Where the refund goes
+
+`POST /swap` accepts an optional `refundAddress`: an address on the **sending** network that receives the funds back.
+
+When you don't set one, LightSwap uses its configured network refund address for that network. If your users might need refunds routed to their own wallets, collect a refund address from them at swap creation. You can't add one after the deposit is sent.
+
+<Warning>
+  The refund address must belong to the sending network. A BTC deposit refunds to a Bitcoin address, not to an Ethereum one.
+</Warning>
+
+## What your integration should do
+
+- Show the `refunded` status plainly, with the refund destination.
+- Keep polling `underpaid` swaps. Underpaid is not terminal; don't promise a refund or a top-up until the status resolves.
+- Don't ask users to send more funds to a swap unless LightSwap support tells you to.
+- For `failed` swaps and stuck cases, contact support with the `externalId`, swap ID, and deposit transaction hash.
+
+## What to tell your users
+
+Three honest sentences that cover almost every case:
+
+1. If a swap can't complete, the deposit is refunded to the refund address.
+2. Crypto transfers can't be reversed, so a refund goes out as a new transfer and needs network confirmations.
+3. Support can trace any swap with the order ID and transaction hash.
