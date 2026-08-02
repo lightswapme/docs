@@ -93,7 +93,8 @@
                           "logoUrl": "/token/usdt.png",
                           "canSend": true,
                           "canReceive": true,
-                          "requiresMemo": false
+                          "requiresMemo": false,
+                          "supportsMemo": false
                         }
                       ]
                     }
@@ -160,6 +161,7 @@
                       "valid": true,
                       "normalizedAddress": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
                       "requiresMemo": false,
+                      "supportsMemo": false,
                       "message": null
                     }
                   }
@@ -207,6 +209,23 @@
                     "customerId": "u_123",
                     "externalId": "order-123"
                   }
+                },
+                "xlmMemo": {
+                  "summary": "Quote USDT to XLM with a destination memo",
+                  "value": {
+                    "from": {
+                      "network": "tron",
+                      "token": "USDT",
+                      "amount": "100"
+                    },
+                    "to": {
+                      "network": "stellar",
+                      "token": "XLM",
+                      "memo": "order-123"
+                    },
+                    "customerId": "u_123",
+                    "externalId": "order-123"
+                  }
                 }
               }
             }
@@ -248,6 +267,29 @@
                       "maxAmountIn": "1",
                       "estimatedTimeSeconds": 900
                     }
+                  },
+                  "xlmMemo": {
+                    "summary": "Quote response for USDT to XLM with a destination memo",
+                    "value": {
+                      "id": "pq_bbbbbbbbbbbbbbbbbbbbbbbb",
+                      "expiresAt": "2026-04-19T10:03:00.000Z",
+                      "from": {
+                        "decimals": 6,
+                        "network": "tron",
+                        "token": "USDT",
+                        "amount": "100"
+                      },
+                      "to": {
+                        "decimals": 7,
+                        "network": "stellar",
+                        "token": "XLM",
+                        "estimatedAmount": "850"
+                      },
+                      "rate": "8.5",
+                      "minAmountIn": "10",
+                      "maxAmountIn": "10000",
+                      "estimatedTimeSeconds": 600
+                    }
                   }
                 }
               }
@@ -268,7 +310,7 @@
           "Swaps"
         ],
         "summary": "Create swap",
-        "description": "Creates a swap from a quote and returns deposit instructions.",
+        "description": "Creates a swap from a quote and returns deposit instructions. Pass `refundAddress` to choose where the funds return if the swap is refunded.",
         "operationId": "createSwap",
         "requestBody": {
           "required": true,
@@ -286,7 +328,19 @@
                       "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
                       "memo": null
                     },
+                    "refundAddress": "bc1qrefund",
                     "notificationEmail": "optional@example.com"
+                  }
+                },
+                "xlmMemoSwap": {
+                  "summary": "Create an XLM swap with a destination memo",
+                  "value": {
+                    "quoteId": "pq_bbbbbbbbbbbbbbbbbbbbbbbb",
+                    "destination": {
+                      "address": "GDQP2KPQGKIHYJGXNUIYOMHARUARCA7DJT5FO2FFOOKY3B2WSQHG4W37",
+                      "memo": "order-123"
+                    },
+                    "refundAddress": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r"
                   }
                 }
               }
@@ -332,7 +386,7 @@
                         "amount": "0.01",
                         "network": "bitcoin",
                         "token": "BTC",
-                        "deadline": "2026-04-19T10:03:30.000Z"
+                        "deadline": "2026-04-19T14:00:30.000Z"
                       },
                       "payout": {
                         "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
@@ -345,6 +399,50 @@
                         "id": "pq_aaaaaaaaaaaaaaaaaaaaaaaa",
                         "rate": "10000",
                         "estimatedTimeSeconds": 900
+                      },
+                      "createdAt": "2026-04-19T10:00:30.000Z",
+                      "updatedAt": "2026-04-19T10:00:30.000Z",
+                      "customerId": "u_123"
+                    }
+                  },
+                  "xlmMemoSwap": {
+                    "summary": "XLM swap with a destination memo waiting for deposit",
+                    "value": {
+                      "id": "CD34EF56AB78",
+                      "externalId": "order-123",
+                      "status": "waiting_deposit",
+                      "errorMessage": null,
+                      "from": {
+                        "decimals": 6,
+                        "network": "tron",
+                        "token": "USDT",
+                        "amount": "100"
+                      },
+                      "to": {
+                        "decimals": 7,
+                        "network": "stellar",
+                        "token": "XLM",
+                        "estimatedAmount": "850"
+                      },
+                      "deposit": {
+                        "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
+                        "memo": null,
+                        "amount": "100",
+                        "network": "tron",
+                        "token": "USDT",
+                        "deadline": "2026-04-19T14:00:30.000Z"
+                      },
+                      "payout": {
+                        "address": "GDQP2KPQGKIHYJGXNUIYOMHARUARCA7DJT5FO2FFOOKY3B2WSQHG4W37",
+                        "memo": "order-123",
+                        "network": "stellar",
+                        "token": "XLM",
+                        "estimatedAmount": "850"
+                      },
+                      "quote": {
+                        "id": "pq_bbbbbbbbbbbbbbbbbbbbbbbb",
+                        "rate": "8.5",
+                        "estimatedTimeSeconds": 600
                       },
                       "createdAt": "2026-04-19T10:00:30.000Z",
                       "updatedAt": "2026-04-19T10:00:30.000Z",
@@ -424,7 +522,7 @@
                         "amount": "0.01",
                         "network": "bitcoin",
                         "token": "BTC",
-                        "deadline": "2026-04-19T10:03:30.000Z"
+                        "deadline": "2026-04-19T14:00:30.000Z"
                       },
                       "payout": {
                         "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
@@ -501,6 +599,16 @@
                   "error": {
                     "code": "validation_error",
                     "message": "quoteId is invalid.",
+                    "details": {}
+                  },
+                  "requestId": "req_123"
+                }
+              },
+              "unsupportedMemo": {
+                "value": {
+                  "error": {
+                    "code": "unsupported_memo",
+                    "message": "Destination memo is not supported for this network or pair.",
                     "details": {}
                   },
                   "requestId": "req_123"
@@ -674,7 +782,8 @@
           "logoUrl",
           "canSend",
           "canReceive",
-          "requiresMemo"
+          "requiresMemo",
+          "supportsMemo"
         ],
         "properties": {
           "symbol": {
@@ -716,6 +825,10 @@
           },
           "requiresMemo": {
             "type": "boolean"
+          },
+          "supportsMemo": {
+            "type": "boolean",
+            "description": "Whether the asset's network can carry a destination memo (for example XRP Ledger, Stellar, or Cosmos)."
           }
         }
       },
@@ -744,7 +857,8 @@
               "string",
               "null"
             ],
-            "description": "Destination memo. The MVP accepts `null` or an omitted value.",
+            "maxLength": 256,
+            "description": "Optional destination memo (up to 256 characters) for memo-capable networks (for example XRP Ledger, Stellar, or Cosmos); check `supportsMemo`. A memo on a network that does not support memos fails with `unsupported_memo`; an invalid memo format fails with `validation_error`.",
             "example": null
           }
         },
@@ -756,6 +870,7 @@
           "valid",
           "normalizedAddress",
           "requiresMemo",
+          "supportsMemo",
           "message"
         ],
         "properties": {
@@ -770,6 +885,10 @@
           },
           "requiresMemo": {
             "type": "boolean"
+          },
+          "supportsMemo": {
+            "type": "boolean",
+            "description": "Whether the network can carry a destination memo (for example XRP Ledger, Stellar, or Cosmos)."
           },
           "message": {
             "type": [
@@ -851,6 +970,15 @@
           "token": {
             "type": "string",
             "example": "USDT"
+          },
+          "memo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 256,
+            "description": "Optional destination memo (up to 256 characters) on memo-capable networks (for example XRP Ledger, Stellar, or Cosmos). Include it so the estimate reflects the route that carries the memo. A memo on a network that does not support memos fails with `unsupported_memo`.",
+            "example": "order-123"
           }
         },
         "additionalProperties": false
@@ -980,6 +1108,14 @@
             ],
             "format": "email",
             "example": "optional@example.com"
+          },
+          "refundAddress": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional address on the sending network that receives the funds back if the swap is refunded. When omitted, LightSwap uses its configured network refund address.",
+            "example": "bc1qrefund"
           }
         },
         "additionalProperties": false
@@ -999,7 +1135,8 @@
               "string",
               "null"
             ],
-            "description": "Destination memo. The MVP accepts `null` or an omitted value.",
+            "maxLength": 256,
+            "description": "Optional destination memo (up to 256 characters) on memo-capable networks (for example XRP Ledger, Stellar, or Cosmos). When a memo is supplied both at quote time (`to.memo`) and at swap time, the swap-time value wins. Memos execute only on routes that can carry memos; when no such route exists for the pair, creation fails with `unsupported_memo`.",
             "example": null
           }
         },
@@ -1186,7 +1323,8 @@
             "type": [
               "string",
               "null"
-            ]
+            ],
+            "description": "The destination memo supplied at quote or swap time, or `null` when no memo was supplied."
           },
           "network": {
             "type": "string"
@@ -1279,6 +1417,7 @@
           "rate_limited",
           "swap_not_found",
           "unsupported_asset",
+          "unsupported_memo",
           "unsupported_pair",
           "validation_error"
         ]

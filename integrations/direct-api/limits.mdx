@@ -11,10 +11,11 @@ The API MVP is intentionally small. It covers backend quote-driven swap creation
 | --- | --- |
 | API keys | Backend-only API keys. |
 | Quote type | Exact-input floating quotes only. |
-| Quote lifetime | Short-lived quotes with an `expiresAt` timestamp. |
+| Quote lifetime | Quotes expire 3 minutes after creation; see `expiresAt`. |
+| Deposit window | Send the deposit before `deposit.deadline`, 4 hours after swap creation. |
 | Commission | Configured during onboarding and commercial setup. |
 | Status updates | Poll `GET /swap/{id}`. |
-| Destination memo | Not supported in the MVP. |
+| Destination memo | Optional on memo-capable networks (XRP Ledger, Stellar, Cosmos), up to 256 characters. Memos execute only on routes that can carry memos; when no such route exists for the pair, swap creation fails with `unsupported_memo`. |
 
 ## Integration defaults
 

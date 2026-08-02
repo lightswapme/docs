@@ -15,6 +15,16 @@ API keys are backend credentials. Keep them in server-side configuration, secret
   Do not expose API keys in browser JavaScript, mobile apps, public repositories, screenshots, analytics events, or client-side error logs.
 </Warning>
 
+## Test keys
+
+You can request a separate test API key with the `lsk_test_` prefix for integration testing.
+
+Test keys run against the live API with real liquidity, so every test swap is a real transaction. Use small amounts.
+
+<Note>
+  There is no sandbox environment. Request a test key from [LightSwap support](https://lightswap.me/support), and keep it separate from your production key.
+</Note>
+
 ## Rate limits
 
 API keys have a configured request limit. If you exceed it, the API returns `429 rate_limited`.

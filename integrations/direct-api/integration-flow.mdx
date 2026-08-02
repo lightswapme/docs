@@ -17,15 +17,15 @@ description: "Follow the recommended Direct API sequence for loading assets, cre
   </Step>
 
   <Step title="Validate the payout address">
-    Call `POST /address` after the user enters a destination address.
+    Call `POST /address` after the user enters a destination address. On memo-capable networks (XRP Ledger, Stellar, Cosmos), pass the destination `memo` when the payout needs one. The response field `supportsMemo` tells you whether the network can carry a memo. A memo on a network that does not support memos fails with `unsupported_memo`.
   </Step>
 
   <Step title="Create a quote">
-    Call `POST /quote` with the send asset, receive asset, and exact send amount.
+    Call `POST /quote` with the send asset, receive asset, and exact send amount. When the payout needs a memo, include it as `to.memo` so the estimate reflects the route that carries the memo.
   </Step>
 
   <Step title="Create the swap">
-    Call `POST /swap` with the quote ID and destination address.
+    Call `POST /swap` with the quote ID and destination address. Pass the destination memo as `destination.memo` when the payout needs one — a memo set here overrides the `to.memo` from the quote. Memos execute only on routes that can carry memos; when no such route exists for the pair, creation fails with `unsupported_memo`. Optionally pass `refundAddress` — an address on the sending network that receives the funds back if the swap is refunded. When omitted, LightSwap uses its configured network refund address.
   </Step>
 
   <Step title="Show deposit instructions">

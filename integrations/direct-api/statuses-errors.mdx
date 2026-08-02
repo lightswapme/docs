@@ -29,6 +29,10 @@ Terminal statuses:
 
 Poll every 30 seconds while the status is not terminal.
 
+### Underpaid swaps
+
+`underpaid` is not terminal. The deposit arrived below the quoted amount and the swap is waiting for the route to settle the outcome. Keep polling: the swap can still move to `processing` and `completed`, or end as `refunded` or `failed`. Do not ask the user to send more funds unless LightSwap support tells you to.
+
 ## Error format
 
 All errors use the same response shape.
@@ -52,10 +56,11 @@ All errors use the same response shape.
 | `inactive_partner`     | API access is disabled.                                | Contact LightSwap.                                                                  |
 | `validation_error`     | The request body, headers, or parameters are invalid.  | Fix the request and retry.                                                          |
 | `unsupported_asset`    | The requested asset is not available for that network. | Refresh assets and ask the user to choose another asset.                            |
+| `unsupported_memo`     | A memo was supplied for a network that does not support memos, or no route that can carry a memo is available for the pair. | Remove the memo and retry, or use a self-custody destination address or another pair. |
 | `unsupported_pair`     | The requested pair is not available.                   | Ask the user to choose another pair or amount.                                      |
 | `quote_not_found`      | The quote ID does not exist for your API key.          | Create a new quote.                                                                 |
 | `quote_expired`        | The quote expired before swap creation.                | Create a new quote.                                                                 |
-| `quote_already_used`   | The quote already created a swap.                      | Retry `POST /swap` with the same `quoteId` or use the stored swap ID.               |
+| `quote_already_used`   | The quote already created a swap.                      | Repeating `POST /swap` with the same `quoteId` returns the existing swap. If you still see this error, create a new quote. |
 | `rate_limited`         | The request limit was exceeded.                        | Wait for `Retry-After`, then retry.                                                 |
 | `provider_unavailable` | A route service is temporarily unavailable.            | Retry later or ask the user to choose another pair.                                 |
 | `swap_not_found`       | The swap ID does not exist for your API key.           | Check the stored swap ID.                                                           |

@@ -7,7 +7,7 @@ The LightSwap widget lets you add the hosted swap flow to your website with an i
 
 Use the widget when you want users to complete the swap flow on your page without building a backend API integration first.
 
-The widget can run without a key. If you have a revenue-sharing agreement with LightSwap, add your public widget key so swaps can be attributed to your integration.
+The widget can run without a key. If you activated a business account on LightSwap, add your public widget key so swaps can be attributed to your integration.
 
 All query parameters are optional. `https://lightswap.me/widget` is a valid widget URL and opens with LightSwap defaults.
 
@@ -25,7 +25,7 @@ All query parameters are optional. `https://lightswap.me/widget` is a valid widg
     Place the iframe where the widget should appear. No wrapper or custom parent component is required.
   </Step>
   <Step title="Add a public widget key if needed">
-    Add `key=YOUR_PUBLIC_WIDGET_KEY` only when LightSwap has issued a key for attribution or revenue sharing.
+    Add `key=YOUR_PUBLIC_WIDGET_KEY` from **Account → Business** when you want attribution and revenue sharing.
   </Step>
 </Steps>
 
@@ -49,7 +49,7 @@ All query parameters are optional. `https://lightswap.me/widget` is a valid widg
 
 ## Add attribution
 
-Use a public widget key only if LightSwap has issued one to you. Add it as the `key` query parameter.
+Copy your public widget key from **Account → Business** on LightSwap and add it as the `key` query parameter.
 
 ```html
 <iframe
@@ -83,6 +83,6 @@ You do not need to register a domain before embedding the widget. If you use a p
 
 ## Need a public widget key?
 
-[Contact LightSwap](https://lightswap.me/support) if you want attributed widget usage or revenue sharing.
+Activate a business account from **Account → Business** on [lightswap.me](https://lightswap.me/account). The widget key is created instantly, and the attributed widget URL and embed code are always copyable from the tab.
 
 Looking for a backend API integration instead of the iframe widget? Start with [Direct API](/integrations/direct-api/introduction) or go directly to the [API Reference](/api-reference/introduction).

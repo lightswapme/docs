@@ -22,7 +22,7 @@
 - Do not document internal database tables, admin SQL, raw API key generation, or internal service names.
 - Do not mention specific swap route providers.
 - Do not promise zero fees. Wallet, gas, and blockchain network costs are separate third-party costs.
-- Do not document unavailable features as live. Webhooks, browser keys, public dashboards, refund endpoints, and per-request custom fees are not included in the MVP.
+- Do not document unavailable features as live. Webhooks, browser keys, refund endpoints, and per-request custom fees are not included in the MVP. The partner dashboard (Account → Business) is live: self-serve activation, flat 0.5% rate, $10 minimum claim, USDC payouts to the LightSwap account balance.
 - Use `https://lightswap.me/api/partner/v1` as the public API base URL until the real API route changes.
 - Keep the site framed as a LightSwap documentation hub, not as API-only docs.
 
