@@ -103,6 +103,7 @@
               "api-reference/address",
               "api-reference/quote",
               "api-reference/swap",
+              "api-reference/swaps",
               "api-reference/swap-status"
             ]
           }

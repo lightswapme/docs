@@ -21,7 +21,7 @@ Then follow the [quickstart](/business/quickstart) to create your first swap in 
 
 For custom rates, test keys, or a dedicated rollout, [email us](mailto:partner@laptev-fzco.com?subject=LightSwap%20Direct%20API%20access).
 
-## The five endpoints
+## The six endpoints
 
 | Endpoint | What it does |
 | --- | --- |
@@ -29,6 +29,7 @@ For custom rates, test keys, or a dedicated rollout, [email us](mailto:partner@l
 | `POST /address` | Validates a destination address before you quote. |
 | `POST /quote` | Creates a short-lived quote for a pair and amount. |
 | `POST /swap` | Creates the swap and returns deposit instructions. |
+| `GET /swap` | Lists your swaps with status and date filters, pagination, and per-swap commission, for reconciliation. |
 | `GET /swap/{id}` | Returns the current swap status. |
 
 ## What the API doesn't have yet
@@ -36,7 +37,6 @@ For custom rates, test keys, or a dedicated rollout, [email us](mailto:partner@l
 Being explicit saves you an integration surprise:
 
 - No webhooks. Poll `GET /swap/{id}` instead.
-- No transaction-history endpoint. Store swap IDs and `externalId` values on your side.
 - No browser-side keys. The API is backend-only.
 - No refund endpoints. Refunds are handled case by case; see [Refunds](/integrations/direct-api/refunds).
 - No per-request custom fees. Commission is the flat partner rate on your account.

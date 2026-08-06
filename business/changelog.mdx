@@ -5,6 +5,13 @@ description: "Partner-facing changes to the LightSwap API, widget, and revenue s
 
 Partner-facing changes, newest first. Breaking changes are announced here before they ship.
 
+## August 2026
+
+**Swap history endpoint**
+
+- `GET /swap` lists your swaps newest first with `limit`/`offset` pagination, a `total` count, and status (`status`) and creation-date (`createdFrom`/`createdTo`) filters — built for reconciliation.
+- Each listed swap includes a `commission` object with the applied rate in basis points and, once the swap completes, the accrued USDC reward and its payout state.
+
 ## July 2026
 
 **Destination memos, refund addresses, and longer deposit windows**
@@ -23,4 +30,4 @@ Partner-facing changes, newest first. Breaking changes are announced here before
 
 ## Known gaps
 
-Not yet available: webhooks, a transaction-history endpoint, browser-side keys, refund endpoints, per-request custom fees, fixed-rate quotes. If one of these blocks your integration, [tell us](https://lightswap.me/support).
+Not yet available: webhooks, browser-side keys, refund endpoints, per-request custom fees, fixed-rate quotes. If one of these blocks your integration, [tell us](https://lightswap.me/support).

@@ -335,6 +335,163 @@
       }
     },
     "/swap": {
+      "get": {
+        "tags": [
+          "Swaps"
+        ],
+        "summary": "List swaps",
+        "description": "Returns the partner's swaps newest first with pagination and per-swap commission attribution, for reconciliation. `total` is the full count matching the filters. Statuses are read from LightSwap's state, which is synchronized roughly every minute; use `GET /swap/{id}` to force a live refresh of a single swap. The `expired` status filter matches swaps whose deposit window has passed without a deposit.",
+        "operationId": "listSwaps",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of swaps to return, from 1 to 100.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "example": 50
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Number of matching swaps to skip, for pagination.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "example": 0
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated swap statuses to include, for example `completed,refunded`.",
+            "schema": {
+              "type": "string",
+              "example": "completed,refunded"
+            }
+          },
+          {
+            "name": "createdFrom",
+            "in": "query",
+            "required": false,
+            "description": "Only swaps created at or after this ISO 8601 date-time.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2026-04-01T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "createdTo",
+            "in": "query",
+            "required": false,
+            "description": "Only swaps created at or before this ISO 8601 date-time.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2026-05-01T00:00:00.000Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Partner swaps matching the filters.",
+            "headers": {
+              "x-request-id": {
+                "$ref": "#/components/headers/RequestId"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SwapListResponse"
+                },
+                "examples": {
+                  "listSwaps": {
+                    "summary": "First page of partner swaps",
+                    "value": {
+                      "swaps": [
+                        {
+                          "id": "AB12CD34EF56",
+                          "externalId": "order-123",
+                          "status": "completed",
+                          "errorMessage": null,
+                          "from": {
+                            "decimals": 8,
+                            "network": "bitcoin",
+                            "token": "BTC",
+                            "amount": "0.01"
+                          },
+                          "to": {
+                            "decimals": 6,
+                            "network": "tron",
+                            "token": "USDT",
+                            "estimatedAmount": "100"
+                          },
+                          "deposit": {
+                            "address": "bc1qdeposit",
+                            "memo": null,
+                            "amount": "0.01",
+                            "network": "bitcoin",
+                            "token": "BTC",
+                            "deadline": "2026-04-19T14:00:30.000Z"
+                          },
+                          "payout": {
+                            "address": "TNDzfERDpxLDS2w1q6yaFC7pzqaSQ3Bg3r",
+                            "memo": null,
+                            "network": "tron",
+                            "token": "USDT",
+                            "estimatedAmount": "100"
+                          },
+                          "quote": {
+                            "id": "pq_aaaaaaaaaaaaaaaaaaaaaaaa",
+                            "rate": "10000",
+                            "estimatedTimeSeconds": 900
+                          },
+                          "commission": {
+                            "bps": 50,
+                            "rewardAmountUsdc": "4.25",
+                            "rewardStatus": "available"
+                          },
+                          "createdAt": "2026-04-19T10:00:30.000Z",
+                          "updatedAt": "2026-04-19T10:05:30.000Z",
+                          "customerId": "u_123"
+                        }
+                      ],
+                      "total": 42,
+                      "limit": 50,
+                      "offset": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/InactiveAccess"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
       "post": {
         "tags": [
           "Swaps"
@@ -1482,6 +1639,95 @@
           "unsupported_pair",
           "validation_error"
         ]
+      },
+      "SwapCommission": {
+        "type": "object",
+        "required": [
+          "bps",
+          "rewardAmountUsdc",
+          "rewardStatus"
+        ],
+        "description": "Partner commission attribution for the swap. Reward fields are null until the swap completes and the commission reward is accrued.",
+        "properties": {
+          "bps": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Commission rate applied to this swap, in basis points.",
+            "example": 50
+          },
+          "rewardAmountUsdc": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Accrued commission reward amount in USDC. Null until the swap reaches the completed status.",
+            "example": "4.25"
+          },
+          "rewardStatus": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "available",
+              "claiming",
+              "claimed",
+              null
+            ],
+            "description": "Reward payout state: available (accrued, claimable), claiming (payout in progress), claimed (paid out). Null until the swap completes.",
+            "example": "available"
+          }
+        }
+      },
+      "SwapListItem": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SwapResponse"
+          },
+          {
+            "type": "object",
+            "required": [
+              "commission"
+            ],
+            "properties": {
+              "commission": {
+                "$ref": "#/components/schemas/SwapCommission"
+              }
+            }
+          }
+        ]
+      },
+      "SwapListResponse": {
+        "type": "object",
+        "required": [
+          "swaps",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "properties": {
+          "swaps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SwapListItem"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of the partner's swaps matching the filters, for reconciliation.",
+            "example": 42
+          },
+          "limit": {
+            "type": "integer",
+            "example": 50
+          },
+          "offset": {
+            "type": "integer",
+            "example": 0
+          }
+        }
       }
     }
   }
