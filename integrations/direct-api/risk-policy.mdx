@@ -1,0 +1,91 @@
+---
+title: "Risk and hold policy"
+description: "What happens when a swap is flagged by a compliance check: what your integration sees, the steps, the timelines, the refund terms, and what to promise your users."
+---
+
+LightSwap needs no account and no KYC to start. That stays true. At the same time, no honest swap service can promise "no holds": every route that moves funds runs compliance checks, and a small number of swaps get flagged. This page is the written version of how those cases work. Read it before you onboard your first users.
+
+## The short version
+
+- Most swaps never see a review. You don't need accounts or documents to integrate or to swap.
+- A swap can be flagged by the compliance systems of the liquidity route executing it. When that happens, the swap pauses. Contact us, and we tell you exactly what the case needs.
+- First response from us within 24 hours of your message. Review target: 3 business days.
+- If a review can't be completed or the user declines it, the deposit is refunded. LightSwap deducts nothing beyond the network fee.
+- We never charge a fee for declining a review, and no case stays unexplained.
+
+## Who screens what
+
+LightSwap does not run its own screening of your users. Deposits are checked by the compliance tooling of the route that executes the swap. Those systems look for sanctions exposure, stolen funds, fraud reports, and similar risk signals. Their exact criteria belong to the routes and are not public. Publishing them would invite abuse, which is why no service in the industry discloses them.
+
+What this means in practice: a flag arrives with the route's decision, and our job is to resolve the case with you quickly and transparently.
+
+## What your integration sees
+
+A flagged swap is visible in the API the same way as any other swap: there is no separate "under review" status.
+
+- The swap stops progressing and stays in a non-terminal status (typically `processing`, sometimes `underpaid`), or ends as `failed` with the route's reason in `errorMessage`.
+- Terminal statuses keep their usual meaning: `completed`, `refunded`, `failed`, `expired`. A case never hangs without an ending.
+- `GET /swap` and `GET /swap/{id}` reflect the same state, so your reconciliation stays consistent.
+
+When a swap is stuck or failed and the reason isn't obvious from `errorMessage`, treat it as a possible risk case and contact us with the swap ID (or your `externalId`) and the deposit transaction hash. We confirm what happened and what the route needs.
+
+## What happens in a flagged case
+
+<Steps>
+  <Step title="The swap pauses">
+    Execution stops. The swap does not complete. It waits for the case to be resolved.
+  </Step>
+  <Step title="You contact us">
+    Send the swap ID or your `externalId`, plus the deposit transaction hash, to [partner@lightswap.me](mailto:partner@lightswap.me). First response within 24 hours, on any day of the week.
+  </Step>
+  <Step title="We tell you what's needed">
+    Usually it's a plain-language description of where the funds came from. Documents are requested only when the route's own policy requires them for that specific case.
+  </Step>
+  <Step title="The case resolves">
+    The swap completes, or the deposit is refunded. Either way you get a definitive answer, not an open-ended wait.
+  </Step>
+</Steps>
+
+## Timelines
+
+- **First response:** within 24 hours of your message, on any day of the week.
+- **Review target:** 3 business days from the moment the needed information is in.
+- **Legal holds:** when a hold is required by law enforcement or a binding legal request, no fixed timeline applies. We will always tell you that a case is in this state, even when we can't share details.
+
+## Refund terms after a flag
+
+- The user declines the review, or the review can't be completed: the deposit is refunded to the swap's `refundAddress` (or the sending address). LightSwap deducts nothing beyond the network fee the return transfer costs, and there is no penalty for declining. If a route's own recovery costs ever apply to a case, we state them to you explicitly before the refund goes out.
+- The funds are confirmed as linked to crime and a lawful request from an authorized body exists: the case follows the legal requirement. We handle these individually and keep you informed.
+- Set `refundAddress` at swap creation when your users may want refunds in their own wallets. It can't be added after the deposit is sent. See [Refunds](/integrations/direct-api/refunds).
+
+## What we never do
+
+- **No refusal fees.** Some services charge a penalty (up to 10% of the deposit) when a user declines a review. We don't. Declining costs the user nothing but the network fee.
+- **No unexplained holds.** If a swap is paused, you always get the reason category and the next step from us.
+- **No KYC promises we can't keep.** We say "no account, no KYC to start," and we never say "no holds." Please don't promise your users either one.
+
+## Prohibited use
+
+- Funds linked to sanctions programs, theft, fraud, or other criminal activity can be rejected or refunded by the routes that execute swaps. Don't build flows whose purpose is to bypass these checks. Flagged cases follow this policy, and repeated abuse ends the integration.
+- We don't publish a list of restricted countries because LightSwap doesn't geo-block today. That doesn't make sanctioned funds welcome: the routes' compliance systems enforce their own rules regardless of geography.
+
+## Your part as a partner
+
+- **Don't over-promise.** "No account needed to start" is accurate. "No checks ever" is not accurate, for us or for anyone else in this market.
+- **Keep an escalation path ready.** When a case opens, we need a contact who can relay questions to the user and bring answers back.
+- **Escalate with context.** When you contact us about a case, include the swap ID or your `externalId`, plus the deposit transaction hash. With those three we can trace any swap immediately.
+- **First-line support is yours.** Your users contact you first; our team backs you up on every flagged case.
+
+## Payout reviews
+
+One related case, so it never surprises you: if a commission payout hits repeated processing errors, it moves to manual review. Your earned fees stay reserved and are never sent twice. The payout completes as soon as the underlying issue is cleared. Nothing is required from you unless we ask.
+
+## Law-enforcement requests
+
+Authorized bodies can reach Laptev FZCO at [partner@lightswap.me](mailto:partner@lightswap.me?subject=LightSwap%20legal%20request). A request should identify the agency and case, and include the relevant addresses, transaction hashes, and timestamps. We act only on requests with a clear legal basis, and we handle them promptly.
+
+<Note>
+  Questions about a specific case? Contact [partner@lightswap.me](mailto:partner@lightswap.me) with the swap ID and deposit transaction hash.
+</Note>
+
+LightSwap is operated by Laptev FZCO, United Arab Emirates.

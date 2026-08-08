@@ -31,6 +31,7 @@ When you don't set one, LightSwap uses its configured network refund address for
 - Keep polling `underpaid` swaps. Underpaid is not terminal; don't promise a refund or a top-up until the status resolves.
 - Don't ask users to send more funds to a swap unless LightSwap support tells you to.
 - For `failed` swaps and stuck cases, contact support with the `externalId`, swap ID, and deposit transaction hash.
+- For swaps paused by a compliance check, follow the [risk and hold policy](/integrations/direct-api/risk-policy), including the refund terms and review timelines.
 
 ## What to tell your users
 

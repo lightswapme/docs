@@ -84,7 +84,8 @@
               "integrations/direct-api/integration-flow",
               "integrations/direct-api/statuses-errors",
               "integrations/direct-api/limits",
-              "integrations/direct-api/refunds"
+              "integrations/direct-api/refunds",
+              "integrations/direct-api/risk-policy"
             ]
           },
           {

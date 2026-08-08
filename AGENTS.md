@@ -12,6 +12,7 @@
 - Use active voice and second person.
 - Keep sentences concise.
 - Use sentence case for headings.
+- Do not use em dashes (—). Use commas, colons, parentheses, or split the sentence instead.
 - Use code formatting for endpoint paths, headers, file names, commands, and literal values.
 - Prefer Mintlify components such as `Card`, `CardGroup`, `Steps`, `Note`, `Tip`, and `Warning` when they make the page easier to scan.
 
@@ -28,5 +29,5 @@
 
 ## Verification contract
 
-- Run `mint validate` and `mint broken-links` after any change and iterate until clean — report the output in your final message.
+- Run `mint validate` and `mint broken-links` after any change and iterate until clean. Report the output in your final message.
 - Preview with `mint dev` when layout or components change.
