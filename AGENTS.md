@@ -1,5 +1,16 @@
 # Documentation project instructions
 
+- Do not commit or push; only the user does that.
+- Check Git status before editing and preserve other agents' uncommitted changes. Recheck files that change concurrently.
+- Research the affected pages and interfaces. Ask the user when public behavior, claims, security, access, or another material choice remains unclear; resolve routine editorial choices directly.
+- Use external services only when the task needs them and access is available. Missing MCP or connector access does not block safe local work.
+- Never publish or perform another irreversible external action without the user's explicit authorization for that action.
+
+## Larger changes
+
+- For cross-project interfaces, major documentation redesigns, or unresolved behavior, confirm a concise spec with scope, exclusions, acceptance criteria, and an end-to-end check. Routine multi-file edits do not need one.
+- Implement in working increments and reassess the cause if repeated fixes fail. Review large or high-risk diffs for correctness and requirement gaps.
+
 ## About this project
 
 - This is the public Mintlify documentation site for LightSwap integrations.
@@ -27,7 +38,19 @@
 - Use `https://lightswap.me/api/partner/v1` as the public API base URL until the real API route changes.
 - Keep the site framed as a LightSwap documentation hub, not as API-only docs.
 
+## Qwen copywriting workflow
+
+- GPT remains responsible for coding, implementation, research, references, verified interfaces, confirmed facts, and the writing brief. For new or substantially rewritten public documentation prose, headings, website content, marketing, SEO text, and localization, load the official `qwencloud-text` skill and follow `docs/qwen-copywriting.md`.
+- Use exactly `qwen3.8-max` for copywriting. Do not silently substitute another model or write the prose with GPT if Qwen is unavailable.
+- Ask Qwen for at least three complete, distinct, numbered variants for each requested content unit and locale. Keep multilingual variants aligned by number so the user can choose a coherent set.
+- Save the original Qwen response and share its full wording and every returned variant with the user in the original order. GPT must not filter, omit, shorten, rewrite, translate, merge, rank, or preselect Qwen's text. Preserve additional variants if Qwen returns more than requested.
+- Put factual, interface, MDX, locale, and length checks in separate notes outside Qwen's text. Corrections and stylistic revisions must come from Qwen; retain and expose the original response as well.
+- Wait for the user's choice before inserting new prose into public pages, unless the user explicitly delegates selection. Integrate the selected wording verbatim; only serialization or markup escaping that preserves the rendered wording is allowed.
+- Internal instructions, research notes, code examples, API contracts, schemas, configuration, and mechanical moves of already approved text remain GPT work. This exception does not allow GPT to author or edit public explanatory prose.
+
 ## Verification contract
 
-- Run `mint validate` and `mint broken-links` after any change and iterate until clean. Report the output in your final message.
+- For instruction or internal-document changes only, run `git diff --check`.
+- For public Mintlify pages or `docs.json`, run `mint validate` and `mint broken-links`, and fix failures caused by the change.
 - Preview with `mint dev` when layout or components change.
+- Report the commands run, their results, and any checks that could not run.

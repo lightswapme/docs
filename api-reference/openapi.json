@@ -1241,6 +1241,7 @@
               "string",
               "null"
             ],
+            "description": "Minimum input amount as a decimal string in the same asset units as from.amount. Null when unavailable.",
             "example": "0.001"
           },
           "maxAmountIn": {
@@ -1248,6 +1249,7 @@
               "string",
               "null"
             ],
+            "description": "Maximum input amount as a decimal string in the same asset units as from.amount. Null when unavailable.",
             "example": "1"
           },
           "estimatedTimeSeconds": {

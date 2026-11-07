@@ -1,3 +1,6 @@
 .idea
 
 .DS_Store
+
+# Local Qwen briefs and original responses
+/output/
